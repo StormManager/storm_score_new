@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Storm청년부</title>
+</head>
+<body>
+  <form th:action="@{/mail}" method="post">
+    <h1>메일발송</h1>
+    <input name="address" placeholder="gunpostorm@gmail.com"><br>
+    <input name="title" placeholder="스톰청년부 주소록"><br>
+    <textarea name="message" placeholder="스톰청년부 청년 주소록 입니다." cols="60" rows="20"></textarea>
+    <button>발송</button>
+  </form>
+</body>
+</html>
