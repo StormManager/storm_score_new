@@ -5,6 +5,7 @@ package com.storm.score;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 /**
  * description    :
@@ -18,7 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 2024/03/28        wammelier       최초 생성
  */
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class Application {
 
   public static void main(String[] args) {
