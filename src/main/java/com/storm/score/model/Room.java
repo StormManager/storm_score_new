@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ROOM", schema = "STORM_SCORE")
+@Table(name = "ROOM")
 public class Room extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
