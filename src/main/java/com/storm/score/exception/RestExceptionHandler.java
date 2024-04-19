@@ -3,23 +3,10 @@ package com.storm.score.exception;
  *
  */
 
-import com.storm.score.exception.ApiException;
-import com.storm.score.exception.ErrorCode;
-import com.storm.score.exception.api.BadRequestException;
-import com.storm.score.exception.api.ConflictException;
-import com.storm.score.exception.api.ForbiddenException;
-import com.storm.score.exception.api.FoundException;
-import com.storm.score.exception.api.InternalServerErrorException;
-import com.storm.score.exception.api.MaxUploadSizeExceededException;
-import com.storm.score.exception.api.NotModifiedException;
-import com.storm.score.exception.api.TooManyRequestException;
-import com.storm.score.exception.api.UnauthorizedException;
+import com.storm.score.exception.api.*;
 import com.storm.score.model.ApiResponse;
-import java.util.Locale;
-import javax.naming.ServiceUnavailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +15,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.naming.ServiceUnavailableException;
+import java.util.Locale;
 
 /**
  * description    :
@@ -111,11 +101,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
       return returnApiResponse(ErrorCode.E401, locale);
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse handleNotFoundException(final ApiException e, final Locale locale) {
-      return returnApiResponse(e, locale);
-    }
 
     @ExceptionHandler(NotModifiedException.class)
     @ResponseStatus(HttpStatus.OK)
