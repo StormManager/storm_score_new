@@ -1,7 +1,4 @@
 package com.storm.score.config;
-/**
- *
- */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
