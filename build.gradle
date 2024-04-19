@@ -8,6 +8,14 @@ group 'com.storm.score'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '17'
 
+task copyYML(type: Copy) {
+    copy {
+        from './storm_score_sub/src'
+        include '*.yml'
+        into './src/main/resources'
+    }
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
