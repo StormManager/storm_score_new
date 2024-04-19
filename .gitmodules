@@ -1,0 +1,3 @@
+[submodule "storm_score_sub"]
+	path = storm_score_sub
+	url = git@github.com:StormManager/storm_score_sub.git
