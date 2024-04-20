@@ -19,7 +19,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * 2024/03/28        wammelier       최초 생성
  */
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class Application {
 
   public static void main(String[] args) {
