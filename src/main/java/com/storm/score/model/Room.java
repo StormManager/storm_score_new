@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * packageName    : com.storm.score.model
- * fileName       : BaseEntity
+ * fileName       : Room
  * author         : ojy
  * date           : 2024/04/19
  * description    :
