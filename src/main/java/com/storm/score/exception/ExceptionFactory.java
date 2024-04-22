@@ -1,8 +1,6 @@
 package com.storm.score.exception;
-/**
- *
- */
 
+import com.storm.score.exception.api.AuthenticationServiceException;
 import com.storm.score.exception.api.BadRequestException;
 import com.storm.score.exception.api.ConflictException;
 import com.storm.score.exception.api.EmptyFileException;
@@ -10,6 +8,8 @@ import com.storm.score.exception.api.InternalServerErrorException;
 import com.storm.score.exception.api.MaxUploadSizeExceededException;
 import com.storm.score.exception.api.NotModifiedException;
 import com.storm.score.exception.api.UnauthorizedException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * description    :
@@ -29,6 +29,7 @@ public interface ExceptionFactory {
       case E001:
         return new NotModifiedException(errorCode.getCode());
       case E401:
+        return new AuthenticationServiceException(errorCode.getCode());
       case E402:
         return new BadRequestException(errorCode.getCode());
       case E403:
