@@ -1,10 +1,14 @@
 package com.storm.score.service;
 
 import com.storm.score.dto.ScoreCreateReqDto;
+import com.storm.score.dto.ScoreGetListReqDto;
+import com.storm.score.dto.ScoreGetListResDto;
 import com.storm.score.model.Score;
-import com.storm.score.model.ScoreImage;
+import com.storm.score.repository.ScoreJoinRepository;
 import com.storm.score.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScoreService {
     private final ScoreRepository scoreRepository;
+    private final ScoreJoinRepository scoreJoinRepository;
 
     private final ScoreImageService scoreImageService;
 
@@ -40,16 +45,15 @@ public class ScoreService {
                 .singer(reqDto.getSinger())
                 .build();
 
-        for (int i = 0; i < fileList.size(); i++) {
-                    ScoreImage.builder()
-                            .score(score)
-                            .url("url")
-                            .index(i)
-                            .build();
-        }
+        scoreImageService.createScoreImages(fileList, score);
 
         scoreRepository.save(score);
 
         return score.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ScoreGetListResDto> getScoreList(ScoreGetListReqDto reqDto, Pageable pageable) {
+        return scoreJoinRepository.getScoreList(reqDto, pageable);
     }
 }
