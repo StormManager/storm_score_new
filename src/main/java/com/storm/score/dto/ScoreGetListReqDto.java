@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * packageName    : com.storm.score.dto
@@ -20,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Schema(name = "Score Get List Req Dto")
 public class ScoreGetListReqDto {
     @Schema(description = "악보 제목", example = "나비")

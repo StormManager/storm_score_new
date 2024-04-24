@@ -1,8 +1,7 @@
 package com.storm.score.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,9 +17,7 @@ import lombok.NoArgsConstructor;
  * 2024/04/23        ojy       최초 생성
  */
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Schema(name = "Score Get List Res Dto")
 public class ScoreGetListResDto {
     @Schema(description = "악보 창고 ID", example = "1")
@@ -37,4 +34,30 @@ public class ScoreGetListResDto {
 
     @Schema(description = "악보 대표 이미지 URL", example = "https://www.google.com")
     private String imageUrl;
+
+    @QueryProjection
+    public ScoreGetListResDto(Long id, String title, String singer, String instrument) {
+        this.id = id;
+        this.title = title;
+        this.singer = singer;
+        this.instrument = instrument;
+    }
+
+    public void regImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Getter
+    public static class ImageJoinDto {
+        private Long scoreId;
+        private String imageUrl;
+        private Integer index;
+
+        @QueryProjection
+        public ImageJoinDto(Long scoreId, String imageUrl, Integer index) {
+            this.scoreId = scoreId;
+            this.imageUrl = imageUrl;
+            this.index = index;
+        }
+    }
 }
