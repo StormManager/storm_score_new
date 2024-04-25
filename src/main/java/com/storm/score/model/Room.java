@@ -2,7 +2,6 @@ package com.storm.score.model;
 
 import com.storm.score.model.base_entity.TimeStamped;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +19,6 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ROOM")
 public class Room extends TimeStamped {
@@ -41,4 +38,19 @@ public class Room extends TimeStamped {
 
     @Column(name = "MAX_CAPACITY", nullable = false)
     private Integer maxCapacity;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    private UserRoom userRoom;
+
+    @Builder
+    public Room(Long createdUserId, String title, String password, Integer maxCapacity) {
+        this.createdUserId = createdUserId;
+        this.title = title;
+        this.password = password;
+        this.maxCapacity = maxCapacity;
+    }
+
+    public void addUserRoom(UserRoom userRoom) {
+        this.userRoom = userRoom;
+    }
 }

@@ -1,6 +1,7 @@
 package com.storm.score.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.storm.score.model.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Schema(name = "Score Get List Res Dto")
-public class ScoreGetListResDto {
+public class ScoreGetListResDto extends ApiResponse {
     @Schema(description = "악보 창고 ID", example = "1")
     private Long id;
 
