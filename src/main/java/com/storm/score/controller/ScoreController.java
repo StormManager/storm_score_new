@@ -6,6 +6,7 @@ import com.storm.score.dto.ScoreGetListResDto;
 import com.storm.score.service.ScoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -50,7 +51,7 @@ public class ScoreController {
     @PostMapping(name = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Long createScore(
             @RequestPart(name = "fileList", required=false) List<MultipartFile> fileList,
-            @RequestPart(name = "reqDto") ScoreCreateReqDto scoreCreateReqDto
+            @RequestPart(name = "reqDto") @Valid ScoreCreateReqDto scoreCreateReqDto
     ) {
         return this.scoreService.createScore(fileList, scoreCreateReqDto);
     }
@@ -68,7 +69,7 @@ public class ScoreController {
                                                   "- ASC : 오름차순")
     @GetMapping(name = "list")
     public Page<ScoreGetListResDto> getScoreList(
-            @ParameterObject @ModelAttribute ScoreGetListReqDto reqDto,
+            @ParameterObject @ModelAttribute @Valid ScoreGetListReqDto reqDto,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return this.scoreService.getScoreList(reqDto, pageable);

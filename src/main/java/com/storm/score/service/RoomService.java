@@ -28,7 +28,7 @@ public class RoomService {
                 .createdUserId(null)    // FIXME : user정보 가져오기
                 .title(roomCreateReqDto.getTitle())
                 .password(roomCreateReqDto.getPassword())
-                .maxCapacity(Integer.parseInt(roomCreateReqDto.getMaxCapacity()))
+                .maxCapacity(roomCreateReqDto.getMaxCapacity())
                 .build();
 
         return this.roomRepository.save(room).getId();
