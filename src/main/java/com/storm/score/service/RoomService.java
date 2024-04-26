@@ -1,5 +1,8 @@
 package com.storm.score.service;
 
+import com.storm.score.common.UserDetails;
+import com.storm.score.dto.RoomCreateReqDto;
+import com.storm.score.model.Room;
 import com.storm.score.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,4 +22,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RoomService {
     private final RoomRepository roomRepository;
+
+    public Long createRoom(RoomCreateReqDto roomCreateReqDto, UserDetails userDetails) {
+        Room room = Room.builder()
+                .createdUserId(null)    // FIXME : user정보 가져오기
+                .title(roomCreateReqDto.getTitle())
+                .password(roomCreateReqDto.getPassword())
+                .maxCapacity(roomCreateReqDto.getMaxCapacity())
+                .build();
+
+        return this.roomRepository.save(room).getId();
+    }
 }
