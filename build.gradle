@@ -49,6 +49,9 @@ dependencies {
     //spring boot lib
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    //web socket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 

@@ -74,5 +74,13 @@ public class ScoreController {
     ) {
         return this.scoreService.getScoreList(reqDto, pageable);
     }
+
+    @Operation(summary = "악보 삭제", description = "악보를 삭제합니다.")
+    @DeleteMapping(name = "")
+    public void deleteScore(
+            @RequestParam Long scoreId
+    ) {
+        this.scoreService.deleteScore(scoreId);
+    }
 }
 
