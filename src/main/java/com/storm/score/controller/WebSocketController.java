@@ -1,5 +1,6 @@
 package com.storm.score.controller;
 
+import com.storm.score.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @RequiredArgsConstructor
 public class WebSocketController {
+    private final WebSocketService webSocketService;
 
     @MessageMapping("/{roomId}")    // config에 room prefix 적용되어있음
     @SendTo("/room/{roomId}")
