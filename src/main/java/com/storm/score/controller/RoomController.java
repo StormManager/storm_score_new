@@ -49,11 +49,29 @@ public class RoomController {
         return this.roomService.getRoomDetail(roomGetDetailReqDto, userDetails, roomId);
     }
 
+    @Operation(summary = "방 참가", description = "방에 참가합니다.")
+    @PatchMapping(name = "/{roomId}/join")
+    public void joinRoom(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter @PathVariable Long roomId
+    ) {
+        this.roomService.joinRoom(roomId, userDetails);
+    }
+
+    @Operation(summary = "방 나가기", description = "방에서 나갑니다.")
+    @PatchMapping(name = "/{roomId}/leave")
+    public void leaveRoom(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter @PathVariable Long roomId
+    ) {
+        this.roomService.leaveRoom(roomId, userDetails);
+    }
+
     @Operation(summary = "방 삭제", description = "방을 삭제합니다.")
-    @DeleteMapping(name = "")
+    @DeleteMapping(name = "/{roomId}")
     public void deleteRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
-            @Parameter @RequestParam Long roomId
+            @Parameter @PathVariable Long roomId
     ) {
         this.roomService.deleteRoom(roomId, userDetails);
     }

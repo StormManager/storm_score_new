@@ -4,6 +4,7 @@ import com.storm.score.common.UserDetails;
 import com.storm.score.dto.RoomCreateReqDto;
 import com.storm.score.dto.RoomGetDetailReqDto;
 import com.storm.score.dto.RoomGetDetailResDto;
+import com.storm.score.exception.api.FoundException;
 import com.storm.score.model.Room;
 import com.storm.score.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     public Long createRoom(RoomCreateReqDto roomCreateReqDto, UserDetails userDetails) {
+
+
         Room room = Room.builder()
                 .createdUserId(null)    // FIXME : user정보 가져오기
                 .title(roomCreateReqDto.getTitle())
@@ -50,5 +53,22 @@ public class RoomService {
 
     public void deleteRoom(Long roomId, UserDetails userDetails) {
         this.roomRepository.deleteById(roomId);
+    }
+
+    public void joinRoom(Long roomId, UserDetails userDetails) {
+        // user가 방에 참여했는지 확인
+
+        // 방에 참여
+    }
+
+    public void leaveRoom(Long roomId, UserDetails userDetails) {
+        // user가 방에 참여했는지 확인
+
+        // 방에서 나가기
+    }
+
+    public Room getRoom(Long roomId){
+        return this.roomRepository.findById(roomId)
+                .orElseThrow(() -> new FoundException("방을 찾을 수 없습니다. id: " + roomId));
     }
 }

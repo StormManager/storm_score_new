@@ -1,7 +1,9 @@
 package com.storm.score.service;
 
+import com.storm.score.dto.ChatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * packageName    : com.storm.score.service
@@ -17,4 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class WebSocketService {
+    private final MessageService messageService;
+
+    @Transactional
+    public ChatDto sendMessage(Long roomId, ChatDto chatDto) {
+        messageService.saveChat(roomId, chatDto);
+
+        return chatDto;
+    }
 }
