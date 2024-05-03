@@ -31,7 +31,7 @@ public class RoomController {
     private final RoomService roomService;
 
     @Operation(summary = "방 생성", description = "방을 생성합니다.")
-    @PostMapping(name = "")
+    @PostMapping()
     public Long createRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @RequestBody RoomCreateReqDto roomCreateReqDto
@@ -40,7 +40,7 @@ public class RoomController {
     }
 
     @Operation(summary = "방 상세 조회", description = "이전 채팅 기록을 불러옵니다.")
-    @GetMapping(name = "/{roomId}")
+    @GetMapping("/{roomId}")
     public RoomGetDetailResDto getRoomDetail(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @RequestBody RoomGetDetailReqDto roomGetDetailReqDto,
@@ -50,7 +50,7 @@ public class RoomController {
     }
 
     @Operation(summary = "방 참가", description = "방에 참가합니다.")
-    @PatchMapping(name = "/{roomId}/join")
+    @PatchMapping("/{roomId}/join")
     public void joinRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @PathVariable Long roomId
@@ -59,7 +59,7 @@ public class RoomController {
     }
 
     @Operation(summary = "방 나가기", description = "방에서 나갑니다.")
-    @PatchMapping(name = "/{roomId}/leave")
+    @PatchMapping("/{roomId}/leave")
     public void leaveRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @PathVariable Long roomId
@@ -68,7 +68,7 @@ public class RoomController {
     }
 
     @Operation(summary = "방 삭제", description = "방을 삭제합니다.")
-    @DeleteMapping(name = "/{roomId}")
+    @DeleteMapping("/{roomId}")
     public void deleteRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @PathVariable Long roomId
