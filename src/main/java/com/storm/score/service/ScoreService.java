@@ -56,4 +56,8 @@ public class ScoreService {
     public Page<ScoreGetListResDto> getScoreList(ScoreGetListReqDto reqDto, Pageable pageable) {
         return scoreJoinRepository.getScoreList(reqDto, pageable);
     }
+
+    public void deleteScore(Long scoreId) {
+        scoreRepository.deleteById(scoreId);
+    }
 }

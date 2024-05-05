@@ -48,7 +48,7 @@ public class ScoreController {
                         -F 'reqDto={"title": "나비", "instrument": "C", "singer": "조정현"};type=application/json' \\\\ \\
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영.jpg' \\\\ \\
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영 복사본.jpg'""")
-    @PostMapping(name = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Long createScore(
             @RequestPart(name = "fileList", required=false) List<MultipartFile> fileList,
             @RequestPart(name = "reqDto") @Valid ScoreCreateReqDto scoreCreateReqDto
@@ -67,12 +67,20 @@ public class ScoreController {
                                                   "\n\n" +
                                                   "- DESC : 내림차순  -- default\n" +
                                                   "- ASC : 오름차순")
-    @GetMapping(name = "list")
+    @GetMapping("list")
     public Page<ScoreGetListResDto> getScoreList(
             @ParameterObject @ModelAttribute @Valid ScoreGetListReqDto reqDto,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         return this.scoreService.getScoreList(reqDto, pageable);
+    }
+
+    @Operation(summary = "악보 삭제", description = "악보를 삭제합니다.")
+    @DeleteMapping()
+    public void deleteScore(
+            @RequestParam Long scoreId
+    ) {
+        this.scoreService.deleteScore(scoreId);
     }
 }
 
