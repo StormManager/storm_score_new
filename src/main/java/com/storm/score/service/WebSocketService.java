@@ -23,7 +23,7 @@ public class WebSocketService {
 
     @Transactional
     public ChatDto sendMessage(Long roomId, ChatDto chatDto) {
-        messageService.saveChat(roomId, chatDto);
+        messageService.saveMessage(roomId, chatDto);
 
         return chatDto;
     }

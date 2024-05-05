@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * packageName    : com.storm.score.model
  * fileName       : Room
@@ -39,8 +42,11 @@ public class Room extends TimeStamped {
     @Column(name = "MAX_CAPACITY", nullable = false)
     private Integer maxCapacity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    private UserRoom userRoom;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserRoom> userRoomList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Message> messageList = new ArrayList<>();
 
     @Builder
     public Room(Long createdUserId, String title, String password, Integer maxCapacity) {
@@ -51,6 +57,10 @@ public class Room extends TimeStamped {
     }
 
     public void addUserRoom(UserRoom userRoom) {
-        this.userRoom = userRoom;
+        this.userRoomList.add(userRoom);
+    }
+
+    public void addMessage(Message message) {
+        this.messageList.add(message);
     }
 }

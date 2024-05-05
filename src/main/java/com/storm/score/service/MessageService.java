@@ -7,6 +7,8 @@ import com.storm.score.model.Room;
 import com.storm.score.model.User;
 import com.storm.score.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +32,7 @@ public class MessageService {
     private final UserService userService;
 
     @Transactional
-    public void saveChat(Long roomId, ChatDto chatDto) {
+    public void saveMessage(Long roomId, ChatDto chatDto) {
         User user = userService.getUser(chatDto.getUserName());
 
         Room room = roomService.getRoom(roomId);
@@ -43,5 +45,10 @@ public class MessageService {
                 .build();
 
         messageRepository.save(message);
+    }
+
+    public Page<ChatDto> getMessageList(Long roomId, Pageable pageable) {
+
+        return null; // FIXME : null
     }
 }
