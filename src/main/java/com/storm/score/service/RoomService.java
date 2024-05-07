@@ -1,7 +1,6 @@
 package com.storm.score.service;
 
 import com.storm.score.common.UserDetails;
-import com.storm.score.dto.ChatDto;
 import com.storm.score.dto.RoomCreateReqDto;
 import com.storm.score.dto.RoomGetDetailResDto;
 import com.storm.score.dto.RoomGetListResDto;
@@ -35,7 +34,6 @@ public class RoomService {
 
     private final UserService userService;
     private final UserRoomService userRoomService;
-    private final MessageService messageService;
 
     public Long createRoom(RoomCreateReqDto roomCreateReqDto, UserDetails userDetails) {
         User user = userService.getUser(userDetails.getUserName());
@@ -51,7 +49,7 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public RoomGetDetailResDto getRoomDetail(UserDetails userDetails, Long roomId, Pageable pageable) {
+    public RoomGetDetailResDto getRoomDetail(UserDetails userDetails, Long roomId) {
         User user = userService.getUser(userDetails.getUserName());
         Room room = this.getRoom(roomId);
 
@@ -60,8 +58,6 @@ public class RoomService {
                 .filter(userRoomEntity -> Objects.equals(userRoomEntity.getUser().getUserId(), user.getUserId()))
                 .findFirst()
                 .orElseThrow(() -> new FoundException("방에 참여하지 않은 유저입니다."));
-
-        Page<ChatDto> messagePage = messageService.getMessageList(roomId, pageable);
 
         return null;
     }

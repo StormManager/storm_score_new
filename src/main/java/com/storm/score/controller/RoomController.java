@@ -1,6 +1,7 @@
 package com.storm.score.controller;
 
 import com.storm.score.common.UserDetails;
+import com.storm.score.dto.CommonResDto;
 import com.storm.score.dto.RoomCreateReqDto;
 import com.storm.score.dto.RoomGetDetailResDto;
 import com.storm.score.dto.RoomGetListResDto;
@@ -36,65 +37,64 @@ public class RoomController {
 
     @Operation(summary = "방 생성", description = "방을 생성합니다.")
     @PostMapping()
-    public Long createRoom(
+    public CommonResDto<Long> createRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @RequestBody RoomCreateReqDto roomCreateReqDto
     ) {
-        return this.roomService.createRoom(roomCreateReqDto, userDetails);
+        Long data = this.roomService.createRoom(roomCreateReqDto, userDetails);
+
+        return CommonResDto.success(data);
     }
 
     @Operation(summary = "방 상세 조회", description = "방의 상세 정보를 조회합니다.")
     @GetMapping("/{roomId}")
-    public RoomGetDetailResDto getRoomDetail(
+    public CommonResDto<RoomGetDetailResDto> getRoomDetail(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
-            @Parameter @PathVariable Long roomId,
-            @ParameterObject @PageableDefault Pageable pageable
+            @Parameter @PathVariable Long roomId
     ) {
-        return this.roomService.getRoomDetail(userDetails, roomId, pageable);
-    }
-
-    @Operation(summary = "채팅 내역 조회", description = "채팅 내역을 조회합니다.")
-    @GetMapping("/{roomId}/chat")
-    public RoomGetDetailResDto getRoomChat(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
-            @Parameter @PathVariable Long roomId,
-            @ParameterObject @PageableDefault Pageable pageable
-    ) {
-        return this.roomService.getRoomChat(userDetails, roomId, pageable);
+        RoomGetDetailResDto data = this.roomService.getRoomDetail(userDetails, roomId);
+        return CommonResDto.success(data);
     }
 
     @Operation(summary = "방 목록 조회", description = "방 목록을 조회합니다.")
     @GetMapping("/list")
-    public Page<RoomGetListResDto> getRoomList(
+    public CommonResDto<Page<RoomGetListResDto>> getRoomList(
             @ParameterObject @PageableDefault Pageable pageable
     ) {
-        return this.roomService.getRoomList(pageable);
+        Page<RoomGetListResDto> data = this.roomService.getRoomList(pageable);
+        return CommonResDto.success(data);
     }
 
     @Operation(summary = "방 참가", description = "방에 참가합니다.")
     @PatchMapping("/{roomId}/join")
-    public void joinRoom(
+    public CommonResDto<Void> joinRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         this.roomService.joinRoom(roomId, userDetails);
+
+        return CommonResDto.success();
     }
 
     @Operation(summary = "방 나가기", description = "방에서 나갑니다.")
     @PatchMapping("/{roomId}/leave")
-    public void leaveRoom(
+    public CommonResDto<Void> leaveRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         this.roomService.leaveRoom(roomId, userDetails);
+
+        return CommonResDto.success();
     }
 
     @Operation(summary = "방 삭제", description = "방을 삭제합니다.")
     @DeleteMapping("/{roomId}")
-    public void deleteRoom(
+    public CommonResDto<Void> deleteRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         this.roomService.deleteRoom(roomId, userDetails);
+
+        return CommonResDto.success();
     }
 }
