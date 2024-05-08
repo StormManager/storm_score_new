@@ -24,6 +24,10 @@ public class UserService {
 
     public User getUser(String userName) {
         return userRepository.findByUserName(userName)
-                .orElseThrow(() -> new FoundException("해당 유저가 없습니다. id : " + userName));
+                .orElseThrow(() -> new FoundException("해당 유저가 없습니다. userName : " + userName));
+    }
+    public User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new FoundException("해당 유저가 없습니다. id : " + userId));
     }
 }

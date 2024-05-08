@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +44,11 @@ public class Room extends TimeStamped {
     private Integer maxCapacity;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @BatchSize(size = 100)
     private List<UserRoom> userRoomList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @BatchSize(size = 100)
     private List<Message> messageList = new ArrayList<>();
 
     @Builder

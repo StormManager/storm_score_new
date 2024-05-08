@@ -1,6 +1,6 @@
 package com.storm.score.dto;
 
-import com.storm.score.model.ApiResponse;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,11 +19,21 @@ import java.time.LocalDateTime;
  */
 @Getter
 @NoArgsConstructor
-public class RoomGetDetailResDto extends ApiResponse {
+public class RoomGetDetailResDto {
     private Long roomId;
     private String roomTitle;
     private String roomCreator;
     private LocalDateTime roomCreatedAt;
     private Integer roomUserCount;
     private Integer roomMaxCapacity;
+
+    @Builder
+    public RoomGetDetailResDto(Long roomId, String roomTitle, String roomCreator, LocalDateTime roomCreatedAt, Integer roomUserCount, Integer roomMaxCapacity) {
+        this.roomId = roomId;
+        this.roomTitle = roomTitle;
+        this.roomCreator = roomCreator;
+        this.roomCreatedAt = roomCreatedAt;
+        this.roomUserCount = roomUserCount;
+        this.roomMaxCapacity = roomMaxCapacity;
+    }
 }

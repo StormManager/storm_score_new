@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * description    :
  * packageName    : com.storm.score.model
@@ -44,5 +46,10 @@ public class User {
 
   private String imgUrl;
 
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<UserRoom> userRoomList;
 
+  public void addUserRoom(UserRoom userRoom) {
+    userRoomList.add(userRoom);
+  }
 }

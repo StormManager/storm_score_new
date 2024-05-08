@@ -1,12 +1,13 @@
 package com.storm.score.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "USERROOM", schema = "STORM_SCORE")
 public class UserRoom {
     @EmbeddedId
@@ -22,4 +23,10 @@ public class UserRoom {
     @JoinColumn(name = "ROOM_ID", nullable = false)
     private Room room;
 
+
+    @Builder
+    public UserRoom(User user, Room room) {
+        user.addUserRoom(this);
+        room.addUserRoom(this);
+    }
 }

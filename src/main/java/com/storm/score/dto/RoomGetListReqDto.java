@@ -1,25 +1,21 @@
 package com.storm.score.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * packageName    : com.storm.score.dto
- * fileName       : ChatDto
+ * fileName       : RoomGetListReqDto
  * author         : ojy
- * date           : 2024/04/30
+ * date           : 2024/05/08
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024/04/30        ojy       최초 생성
+ * 2024/05/08        ojy       최초 생성
  */
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class ChatDto {
-    private String userName;
-    private String messageType;
-    private String content;
+public class RoomGetListReqDto {
+    private String title;
+    private Integer maxCapacity;
+    private String creator;
 }
