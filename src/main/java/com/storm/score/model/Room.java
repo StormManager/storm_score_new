@@ -2,10 +2,13 @@ package com.storm.score.model;
 
 import com.storm.score.model.base_entity.TimeStamped;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName    : com.storm.score.model
@@ -20,8 +23,6 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ROOM")
 public class Room extends TimeStamped {
@@ -41,4 +42,28 @@ public class Room extends TimeStamped {
 
     @Column(name = "MAX_CAPACITY", nullable = false)
     private Integer maxCapacity;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @BatchSize(size = 100)
+    private List<UserRoom> userRoomList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @BatchSize(size = 100)
+    private List<Message> messageList = new ArrayList<>();
+
+    @Builder
+    public Room(Long createdUserId, String title, String password, Integer maxCapacity) {
+        this.createdUserId = createdUserId;
+        this.title = title;
+        this.password = password;
+        this.maxCapacity = maxCapacity;
+    }
+
+    public void addUserRoom(UserRoom userRoom) {
+        this.userRoomList.add(userRoom);
+    }
+
+    public void addMessage(Message message) {
+        this.messageList.add(message);
+    }
 }

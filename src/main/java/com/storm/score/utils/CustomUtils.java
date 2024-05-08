@@ -12,7 +12,10 @@ package com.storm.score.utils;
  * 2024/04/23        ojy       최초 생성
  */
 public class CustomUtils {
+    public static final String DEFAULT_PASSWORD = "disable";
+
     public static boolean isNotNullAndBlank(String str) {
         return str != null && !str.isBlank();
     }
+
 }

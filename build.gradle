@@ -49,6 +49,9 @@ dependencies {
     //spring boot lib
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    //web socket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -86,6 +89,10 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    //S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.apache.tika:tika-core:2.4.1'
 }
 
 test {

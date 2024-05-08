@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,14 +44,14 @@ public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
-  private String userId;
+  @Column(name = "user_uuid")
+  private Long userId;
 
   @Column(name = "email")
   private String email;
 
   @Column(name = "nickname")
-  private String nickname;
+  private String userName;
 
   @Column(name = "password")
   private String password;
@@ -66,7 +67,7 @@ public class User implements UserDetails {
 
   @Override
   public String getUserName() {
-    return this.userId;
+    return this.userName;
   }
 
   @Override
@@ -87,5 +88,12 @@ public class User implements UserDetails {
   @Override
   public boolean isEnabled() {
     return false;
+  }
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<UserRoom> userRoomList;
+
+  public void addUserRoom(UserRoom userRoom) {
+    userRoomList.add(userRoom);
   }
 }

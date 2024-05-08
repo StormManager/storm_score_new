@@ -25,14 +25,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScoreImageService {
     private final ScoreImageRepository scoreImageRepository;
-
+    private final AwsService awsService;
     public List<ScoreImage> createScoreImages(List<MultipartFile> fileList, Score score) {
         List<ScoreImage> scoreImageList = new ArrayList<>();
-        for (int i = 0; i < fileList.size(); i++) {
+
+        List<String> urlList = awsService.uploadFile(fileList);
+
+        for (int i = 0; i < urlList.size(); i++) {
             scoreImageList.add(
                 ScoreImage.builder()
                     .score(score)
-                    .url("url")
+                    .url(urlList.get(i))
                     .index(i)
                     .build()
             );

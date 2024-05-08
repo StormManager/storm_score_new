@@ -1,11 +1,13 @@
 package com.storm.score.controller;
 
+import com.storm.score.dto.CommonResDto;
 import com.storm.score.dto.ScoreCreateReqDto;
 import com.storm.score.dto.ScoreGetListReqDto;
 import com.storm.score.dto.ScoreGetListResDto;
 import com.storm.score.service.ScoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -47,12 +49,13 @@ public class ScoreController {
                         -F 'reqDto={"title": "나비", "instrument": "C", "singer": "조정현"};type=application/json' \\\\ \\
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영.jpg' \\\\ \\
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영 복사본.jpg'""")
-    @PostMapping(name = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Long createScore(
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CommonResDto<Long> createScore(
             @RequestPart(name = "fileList", required=false) List<MultipartFile> fileList,
-            @RequestPart(name = "reqDto") ScoreCreateReqDto scoreCreateReqDto
+            @RequestPart(name = "reqDto") @Valid ScoreCreateReqDto scoreCreateReqDto
     ) {
-        return this.scoreService.createScore(fileList, scoreCreateReqDto);
+        Long data = this.scoreService.createScore(fileList, scoreCreateReqDto);
+        return CommonResDto.success(data);
     }
 
     // 텍스트 블록 사용시 descrption 인식안됨
@@ -66,12 +69,23 @@ public class ScoreController {
                                                   "\n\n" +
                                                   "- DESC : 내림차순  -- default\n" +
                                                   "- ASC : 오름차순")
-    @GetMapping(name = "list")
-    public Page<ScoreGetListResDto> getScoreList(
-            @ParameterObject @ModelAttribute ScoreGetListReqDto reqDto,
+    @GetMapping("list")
+    public CommonResDto<Page<ScoreGetListResDto>> getScoreList(
+            @ParameterObject @ModelAttribute @Valid ScoreGetListReqDto reqDto,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return this.scoreService.getScoreList(reqDto, pageable);
+        Page<ScoreGetListResDto> data = this.scoreService.getScoreList(reqDto, pageable);
+        return CommonResDto.success(data);
+    }
+
+    @Operation(summary = "악보 삭제", description = "악보를 삭제합니다.")
+    @DeleteMapping()
+    public CommonResDto<Void> deleteScore(
+            @RequestParam Long scoreId
+    ) {
+        this.scoreService.deleteScore(scoreId);
+
+        return CommonResDto.success();
     }
 }
 
