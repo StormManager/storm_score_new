@@ -3,9 +3,8 @@ package com.storm.score.repository;
  *
  */
 
-import com.storm.score.model.Users;
+import com.storm.score.model.User;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -19,12 +18,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * -----------------------------------------------------------
  * 2024/04/24        wammelier       최초 생성
  */
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-  Optional<Users> findByEmail(String email);
+  Optional<User> findByEmail(String email);
   boolean existsByEmail(String email);
-  Optional<Users> findByPhoneNum(String phoneNum);
+  Optional<User> findByPhoneNum(String phoneNum);
   boolean existsByPhoneNum(String phoneNum);
-  Optional<Users> findByRefreshToken(String refreshToken);
+  Optional<User> findByRefreshToken(String refreshToken);
 
 }

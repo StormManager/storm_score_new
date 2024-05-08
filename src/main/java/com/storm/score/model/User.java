@@ -24,7 +24,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 /**
  * description    :
  * packageName    : com.storm.score.model
- * fileName       : Users
+ * fileName       : User
  * author         : wammelier
  * date           : 2024/04/17
  * ===========================================================
@@ -39,7 +39,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USERS")
-public class Users implements UserDetails {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

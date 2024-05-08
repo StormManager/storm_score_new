@@ -3,10 +3,8 @@ package com.storm.score.common.security;
  *
  */
 
-import com.storm.score.model.Users;
 import com.storm.score.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
