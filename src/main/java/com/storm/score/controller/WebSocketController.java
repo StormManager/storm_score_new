@@ -1,6 +1,6 @@
 package com.storm.score.controller;
 
-import com.storm.score.dto.ChatDto;
+import com.storm.score.dto.MessageDto;
 import com.storm.score.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -26,10 +26,10 @@ public class WebSocketController {
 
     @MessageMapping("/room/{roomId}")
     @SendTo("/room/{roomId}")
-    public ChatDto sendMessage(
+    public MessageDto sendMessage(
             @DestinationVariable Long roomId,
-            ChatDto chatDto
+            MessageDto messageDto
     ) {
-        return webSocketService.sendMessage(roomId, chatDto);
+        return webSocketService.sendMessage(roomId, messageDto);
     }
 }

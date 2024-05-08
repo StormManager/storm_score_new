@@ -1,6 +1,6 @@
 package com.storm.score.service;
 
-import com.storm.score.dto.ChatDto;
+import com.storm.score.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +22,9 @@ public class WebSocketService {
     private final MessageService messageService;
 
     @Transactional
-    public ChatDto sendMessage(Long roomId, ChatDto chatDto) {
-        messageService.saveMessage(roomId, chatDto);
+    public MessageDto sendMessage(Long roomId, MessageDto messageDto) {
+        messageService.saveMessage(roomId, messageDto);
 
-        return chatDto;
+        return messageDto;
     }
 }

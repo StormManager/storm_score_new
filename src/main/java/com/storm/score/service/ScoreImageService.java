@@ -35,7 +35,7 @@ public class ScoreImageService {
             scoreImageList.add(
                 ScoreImage.builder()
                     .score(score)
-                    .url("url")
+                    .url(urlList.get(i))
                     .index(i)
                     .build()
             );
