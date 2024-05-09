@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * description    :
@@ -44,7 +43,7 @@ public class SecurityConfig {
     http
         //---> security unable start
         .authorizeHttpRequests(authorizeRequest ->
-            authorizeRequest.requestMatchers("/", "/test/").permitAll())
+            authorizeRequest.requestMatchers("/", "/test/", "/**").permitAll())
         //---> security unable end
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(AbstractHttpConfigurer::disable)
