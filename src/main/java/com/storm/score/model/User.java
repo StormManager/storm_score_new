@@ -1,6 +1,7 @@
 package com.storm.score.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class User {
   @Column(name = "user_id")
   private Long userId;
 
-  @Column(nullable = false)
+  @Column(nullable = false, name="nickname")
   private String userName;
 
   @Column(nullable = false)
@@ -45,6 +46,9 @@ public class User {
   private String phoneNum;
 
   private String imgUrl;
+
+  @Column(nullable = false)
+  private List<String> roles = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserRoom> userRoomList;
