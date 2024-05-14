@@ -1,4 +1,4 @@
-package com.storm.score.common;
+package com.storm.score.common.security;
 /**
  *
  */

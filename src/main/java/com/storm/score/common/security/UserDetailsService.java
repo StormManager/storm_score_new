@@ -1,9 +1,11 @@
-package com.storm.score.common;
+package com.storm.score.common.security;
 /**
  *
  */
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.storm.score.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  * description    :
@@ -16,8 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * -----------------------------------------------------------
  * 2024/04/18        wammelier       최초 생성
  */
-public interface UserDetailsService {
-
-  UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException;
+@Service
+@RequiredArgsConstructor
+public class UserDetailsService {
+  private final UserRepository userRepository;
 
 }

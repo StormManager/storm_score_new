@@ -1,13 +1,27 @@
 package com.storm.score.model;
 
+import com.storm.score.common.security.UserDetails;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * description    :
@@ -22,33 +36,65 @@ import java.util.List;
  */
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
-@Table(name = "USERS")
 @NoArgsConstructor
-public class User {
+@Table(name = "USERS")
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
+  @Column(name = "user_uuid")
   private Long userId;
 
   @Column(nullable = false, name="nickname")
   private String userName;
 
-  @Column(nullable = false)
-  private String userPwd;
-
-  @Column(nullable = false, unique = true, length = 30)
+  @Column(name = "email")
   private String email;
 
-  @Column(nullable = false)
-  private String phoneNum;
+  @Column(name = "userPwd")
+  private String userPwd;
 
-  private String imgUrl;
-
-  @Column(nullable = false)
+  @ElementCollection(fetch = FetchType.EAGER)
+  @Builder.Default
   private List<String> roles = new ArrayList<>();
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+  }
+
+  @Override
+  public String getPassword() {
+    return this.userPwd;
+  }
+
+  @Override
+  public String getUserName() {
+    return this.userName;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAcountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return false;
+  }
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserRoom> userRoomList;

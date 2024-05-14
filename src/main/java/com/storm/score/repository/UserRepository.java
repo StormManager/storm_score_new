@@ -1,9 +1,8 @@
 package com.storm.score.repository;
 
 import com.storm.score.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * packageName    : com.storm.score.repository
@@ -12,11 +11,22 @@ import java.util.Optional;
  * date           : 2024/05/02
  * description    :
  * ===========================================================
- * DATE              AUTHOR             NOTE
+ * lDATE              AUTHOR            NOTE
  * -----------------------------------------------------------
- * 2024/05/02        ojy       최초 생성
+ * 2024/05/02        ojy                최초 생성
  */
+
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUserName(String userName);
+  Optional<User> findByEmail(String email);
+
+  boolean existsByEmail(String email);
+
+//  Optional<User> findByPhoneNum(String phoneNum);
+
+//  boolean existsByPhoneNum(String phoneNum);
+
+//  Optional<User> findByRefreshToken(String refreshToken);
+
+  Optional<User> findByUserName(String userName);
 }

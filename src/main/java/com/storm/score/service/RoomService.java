@@ -1,6 +1,6 @@
 package com.storm.score.service;
 
-import com.storm.score.common.UserDetails;
+import com.storm.score.common.security.UserDetails;
 import com.storm.score.dto.RoomCreateReqDto;
 import com.storm.score.dto.RoomGetDetailResDto;
 import com.storm.score.dto.RoomGetListReqDto;

@@ -16,13 +16,13 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = '17'
 
 // git submodule 내부에 application.yml 파일 카피를 위한 Gradle Task
-task copyYML(type: Copy) {
-    copy {
-        from './storm_score_sub/src'
-        include '*.yml'
-        into './src/main/resources'
-    }
-}
+//task copyYML(type: Copy) {
+//    copy {
+//        from './storm_score_sub/src'
+//        include '*.yml'
+//        into './src/main/resources'
+//    }
+//}
 // Gradle Build 시 해당 Task를 실행
 project.defaultTasks "copyYML"
 
@@ -57,6 +57,9 @@ dependencies {
 
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //SpringDoc
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
     //logback
 //    implementation 'ch.qos.logback:logback-core:1.2.9'

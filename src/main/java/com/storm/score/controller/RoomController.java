@@ -1,6 +1,6 @@
 package com.storm.score.controller;
 
-import com.storm.score.common.UserDetails;
+import com.storm.score.common.security.UserDetails;
 import com.storm.score.dto.*;
 import com.storm.score.service.MessageService;
 import com.storm.score.service.RoomService;
