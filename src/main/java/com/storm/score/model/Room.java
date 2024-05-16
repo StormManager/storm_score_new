@@ -24,7 +24,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "ROOM")
+@Table(name = "ROOM", schema = "STORM_SCORE")
 public class Room extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,11 +43,11 @@ public class Room extends TimeStamped {
     @Column(name = "MAX_CAPACITY", nullable = false)
     private Integer maxCapacity;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @BatchSize(size = 100)
     private List<UserRoom> userRoomList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @BatchSize(size = 100)
     private List<Message> messageList = new ArrayList<>();
 

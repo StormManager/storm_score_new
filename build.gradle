@@ -7,7 +7,7 @@ plugins {
 }
 
 compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -65,14 +65,11 @@ dependencies {
 //    implementation 'ch.qos.logback:logback-core:1.2.9'
 //    testImplementation 'ch.qos.logback:logback-classic:1.2.9'
 
-
     // spring security
     implementation 'org.springframework.boot:spring-boot-starter-security:3.1.5'
 
-    // JWT
-//    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     //Swagger
     implementation 'io.springfox:springfox-swagger2:3.0.0'

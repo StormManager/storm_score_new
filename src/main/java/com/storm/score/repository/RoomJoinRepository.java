@@ -45,7 +45,7 @@ public class RoomJoinRepository {
         }
 
         if (CustomUtils.isNotNullAndBlank(roomGetListReqDto.getCreator())) {
-            builder.and(user.userName.eq(roomGetListReqDto.getCreator()));
+            builder.and(user.nickName.eq(roomGetListReqDto.getCreator()));
         }
 
         if (roomGetListReqDto.getMaxCapacity() != null) {
@@ -57,14 +57,14 @@ public class RoomJoinRepository {
                                 room.id,
                                 room.title,
                                 room.maxCapacity,
-                                user.userName,
+                                user.nickName,
                                 room.password,
                                 room.createdAt,
                                 room.updatedAt
                         )
                 )
                 .from(room)
-                .leftJoin(user).on(room.createdUserId.eq(user.userId))
+                .leftJoin(user).on(room.createdUserId.eq(user.id))
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
@@ -76,7 +76,7 @@ public class RoomJoinRepository {
                     switch (property){
                         case "title" -> query.orderBy(new OrderSpecifier<>(sortOrder, room.title));
                         case "maxCapacity" -> query.orderBy(new OrderSpecifier<>(sortOrder, room.maxCapacity));
-                        case "creator" -> query.orderBy(new OrderSpecifier<>(sortOrder, user.userName));
+                        case "creator" -> query.orderBy(new OrderSpecifier<>(sortOrder, user.nickName));
                         case "createdAt" -> query.orderBy(new OrderSpecifier<>(sortOrder, room.createdAt));
                         case "updatedAt" -> query.orderBy(new OrderSpecifier<>(sortOrder, room.updatedAt));
                         default -> query.orderBy(QueryDslUtils.OrderByNull.getDefault());
@@ -87,7 +87,7 @@ public class RoomJoinRepository {
 
         Long count = queryFactory.select(room.count())
                 .from(room)
-                .leftJoin(user).on(room.createdUserId.eq(user.userId))
+                .leftJoin(user).on(room.createdUserId.eq(user.id))
                 .where(builder)
                 .fetchFirst();
 

@@ -34,7 +34,7 @@ public class MessageJoinRepository {
 
         List<MessageDto> content = queryFactory.select(
                         new QMessageDto(
-                                user.userName,
+                                user.email,
                                 message.messageType,
                                 message.content
                         )

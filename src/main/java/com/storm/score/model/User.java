@@ -1,27 +1,15 @@
 package com.storm.score.model;
 
-import com.storm.score.common.security.UserDetails;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.storm.score.em.UserRole;
+import com.storm.score.model.base_entity.TimeStamped;
 import jakarta.persistence.*;
-import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * description    :
@@ -36,65 +24,32 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
  */
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "USERS")
-public class User implements UserDetails {
+@Table(name = "USER")
+public class User extends TimeStamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_uuid")
-  private Long userId;
+  @Column(name = "USER_ID")
+  private Long id;
 
-  @Column(nullable = false, name="nickname")
-  private String userName;
+  @Column(nullable = false, name="NICKNAME")
+  private String nickName;
 
-  @Column(name = "email")
+  @Column(name = "EMAIL")
   private String email;
 
-  @Column(name = "userPwd")
+  @Column(name = "USER_PWD")
   private String userPwd;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  @Builder.Default
-  private List<String> roles = new ArrayList<>();
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-  }
-
-  @Override
-  public String getPassword() {
-    return this.userPwd;
-  }
-
-  @Override
-  public String getUserName() {
-    return this.userName;
-  }
-
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isAcountNonLocked() {
-    return true;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return false;
-  }
+  @Enumerated(value = EnumType.STRING)
+  @JoinTable(name = "USER_ROLE",
+          joinColumns = @JoinColumn(name = "USER_ID"))
+  @Column(name = "ROLE")  // USER_ROLE 테이블의 ROLE 컬럼으로 정상 할당 됨 (에러 무시)
+  private List<UserRole> userRoleList = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserRoom> userRoomList;

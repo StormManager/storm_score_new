@@ -1,6 +1,5 @@
 package com.storm.score.controller;
 
-import com.storm.score.common.security.UserDetails;
 import com.storm.score.dto.*;
 import com.storm.score.service.MessageService;
 import com.storm.score.service.RoomService;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /**

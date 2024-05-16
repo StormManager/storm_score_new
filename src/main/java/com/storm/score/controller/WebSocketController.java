@@ -30,7 +30,7 @@ public class WebSocketController {
             @DestinationVariable Long roomId,
             MessageDto messageDto
     ) {
-        webSocketService.sendMessage(roomId, messageDto);
-        simpMessagingTemplate.convertAndSend("/sub/room/" + roomId, messageDto);
+        MessageDto message = webSocketService.sendMessage(roomId, messageDto);
+        simpMessagingTemplate.convertAndSend("/sub/room/" + roomId, message);
     }
 }
