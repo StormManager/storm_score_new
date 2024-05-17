@@ -32,4 +32,8 @@ public class GetUserEntityService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND,"해당 유저가 없습니다. id : " + userId));
     }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

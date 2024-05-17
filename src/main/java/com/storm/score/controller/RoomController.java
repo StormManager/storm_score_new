@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/room")
-@Tag(name = "Room", description = "악보 공유 방 API")
+@Tag(name = "03. Room", description = "악보 공유 방 API")
 public class RoomController {
     private final RoomService roomService;
     private final MessageService messageService;

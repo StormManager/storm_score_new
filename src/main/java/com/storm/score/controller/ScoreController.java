@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/score")
-@Tag(name = "Score", description = "악보 창고 API")
+@Tag(name = "02. Score", description = "악보 창고 API")
 public class ScoreController {
     private final ScoreService scoreService;
 

@@ -1,4 +1,4 @@
-package com.storm.score.security;
+package com.storm.score.config;
 
 import com.storm.score.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,6 @@ package com.storm.score.model;
 import com.storm.score.em.UserRole;
 import com.storm.score.model.base_entity.TimeStamped;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +23,6 @@ import java.util.List;
  */
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USER")
 public class User extends TimeStamped {
@@ -49,10 +46,27 @@ public class User extends TimeStamped {
   @JoinTable(name = "USER_ROLE",
           joinColumns = @JoinColumn(name = "USER_ID"))
   @Column(name = "ROLE")  // USER_ROLE 테이블의 ROLE 컬럼으로 정상 할당 됨 (에러 무시)
-  private List<UserRole> userRoleList = new ArrayList<>();
+  private List<UserRole> userRoleList = List.of(UserRole.USER);
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<UserRoom> userRoomList;
+  private List<UserRoom> userRoomList = new ArrayList<>();
+
+  @Builder
+  public User(String nickName, String email, String userPwd) {
+    this.nickName = nickName;
+    this.email = email;
+    this.userPwd = userPwd;
+  }
+
+  public void updateUserPwd(String userPwd) {
+    this.userPwd = userPwd;
+  }
+
+  public void addRoleList(List<String> userRoleList) {
+    for (String role : userRoleList) {
+      this.userRoleList.add(UserRole.valueOf(role.toUpperCase()));
+    }
+  }
 
   public void addUserRoom(UserRoom userRoom) {
     userRoomList.add(userRoom);

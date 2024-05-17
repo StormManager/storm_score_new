@@ -9,7 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
     // 토큰 유효시간 30분
     private final UserDetailsService userDetailsService;
@@ -33,10 +34,6 @@ public class JwtTokenProvider {
     @Value("${jwt.token-validity-in-seconds}")
     private Long expirationTime;
 
-    @Autowired
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
@@ -46,9 +43,10 @@ public class JwtTokenProvider {
 
     // JWT 토큰 생성
     @Builder(builderMethodName = "createTokenBuilder", builderClassName = "CreateTokenBuilder")
-    public String createToken(String userId, String email, List<UserRole> userRoleList) {
+    public String createToken(String userId, String email, String nickName, List<UserRole> userRoleList) {
         Claims claims = Jwts.claims().setSubject(userId);
         claims.put("email", email);
+        claims.put("nickName", nickName);
         claims.put("roleList", userRoleList);
 
         Date now = new Date();
