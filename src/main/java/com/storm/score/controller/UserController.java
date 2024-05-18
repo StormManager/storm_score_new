@@ -1,6 +1,7 @@
 package com.storm.score.controller;
 
 import com.storm.score.dto.CommonResDto;
+import com.storm.score.dto.UserLoginReqDto;
 import com.storm.score.dto.UserSignupReqDto;
 import com.storm.score.dto.UserSignupResDto;
 import com.storm.score.service.UserService;
@@ -62,9 +63,9 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @GetMapping("/login")
     public CommonResDto<String> login(
-            @Parameter @ModelAttribute UserSignupReqDto userSignupReqDto
+            @Parameter @ModelAttribute UserLoginReqDto userLoginReqDto
     ) {
-        String data = this.userService.login(userSignupReqDto);
+        String data = this.userService.login(userLoginReqDto);
 
         return CommonResDto.success(data);
     }

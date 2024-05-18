@@ -1,5 +1,6 @@
 package com.storm.score.service;
 
+import com.storm.score.dto.UserLoginReqDto;
 import com.storm.score.dto.UserSignupReqDto;
 import com.storm.score.dto.UserSignupResDto;
 import com.storm.score.exception.ApiException;
@@ -55,7 +56,7 @@ public class UserService {
                 .userId(String.valueOf(user.getId()))
                 .email(user.getEmail())
                 .nickName(user.getNickName())
-                .userRoleList(user.getUserRoleList())
+                .userRoleList(user.getUserRoleSet())
                 .build();
 
         return UserSignupResDto.builder()
@@ -73,7 +74,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public String login(UserSignupReqDto reqDto) {
+    public String login(UserLoginReqDto reqDto) {
         User user = getUserEntityService.getUser(reqDto.getEmail());
 
         boolean isMatch = passwordEncoder.matches(reqDto.getUserPwd(), user.getUserPwd());
@@ -83,7 +84,7 @@ public class UserService {
                 .userId(String.valueOf(user.getId()))
                 .email(user.getEmail())
                 .nickName(user.getNickName())
-                .userRoleList(user.getUserRoleList())
+                .userRoleList(user.getUserRoleSet())
                 .build();
     }
 

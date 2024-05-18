@@ -63,7 +63,7 @@ public class DeveloperController {
                 .userId(String.valueOf(user.getId()))
                 .email(user.getEmail())
                 .nickName(user.getNickName())
-                .userRoleList(user.getUserRoleList())
+                .userRoleList(user.getUserRoleSet())
                 .build();
 
         UserSignupResDto data = UserSignupResDto.builder()

@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -22,14 +22,14 @@ public class UserDetailsImpl implements UserDetails {
     private final String userPwd;
 
     @Getter
-    private final List<UserRole> userRoleList;
+    private final Set<UserRole> userRoleList;
 
     public UserDetailsImpl(User user) {
         this.userId = user.getId();
         this.email = user.getEmail();
         this.name = user.getNickName();
         this.userPwd = user.getUserPwd();
-        this.userRoleList = user.getUserRoleList();
+        this.userRoleList = user.getUserRoleSet();
     }
 
 

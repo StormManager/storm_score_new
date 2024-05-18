@@ -1,6 +1,7 @@
 package com.storm.score.controller;
 
 import com.storm.score.dto.*;
+import com.storm.score.security.UserDetailsImpl;
 import com.storm.score.service.MessageService;
 import com.storm.score.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +49,7 @@ public class RoomController {
     @Operation(summary = "방 상세 조회", description = "방의 상세 정보를 조회합니다.")
     @GetMapping("/{roomId}")
     public CommonResDto<RoomGetDetailResDto> getRoomDetail(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         RoomGetDetailResDto data = this.roomService.getRoomDetail(userDetails, roomId);

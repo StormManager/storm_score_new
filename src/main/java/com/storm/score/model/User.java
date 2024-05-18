@@ -7,8 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * description    :
@@ -46,7 +45,7 @@ public class User extends TimeStamped {
   @JoinTable(name = "USER_ROLE",
           joinColumns = @JoinColumn(name = "USER_ID"))
   @Column(name = "ROLE")  // USER_ROLE 테이블의 ROLE 컬럼으로 정상 할당 됨 (에러 무시)
-  private List<UserRole> userRoleList = List.of(UserRole.USER);
+  private Set<UserRole> userRoleSet = new HashSet<>(Set.of(UserRole.USER));
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserRoom> userRoomList = new ArrayList<>();
@@ -62,9 +61,9 @@ public class User extends TimeStamped {
     this.userPwd = userPwd;
   }
 
-  public void addRoleList(List<String> userRoleList) {
+  public void addRoleList(Collection<String> userRoleList) {
     for (String role : userRoleList) {
-      this.userRoleList.add(UserRole.valueOf(role.toUpperCase()));
+      this.userRoleSet.add(UserRole.valueOf(role.toUpperCase()));
     }
   }
 

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(name = "User Signup Request")
 public class UserSignupReqDto {
     @Schema(description = "이메일", example = "test@email.com")
