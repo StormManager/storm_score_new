@@ -36,4 +36,8 @@ public class GetUserEntityService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public boolean existsByNickName(String nickName) {
+        return userRepository.existsByNickName(nickName);
+    }
 }

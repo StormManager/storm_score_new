@@ -5,6 +5,7 @@ import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.LayoutBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.storm.score.utils.NetworkUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @Setter
 @Getter
@@ -53,7 +55,18 @@ public class GoogleChatAppender extends AppenderBase<ILoggingEvent> {
             text = text.substring(0, 4000);
         }
 
-        GoogleChatWebhookDto webhookDto = new GoogleChatWebhookDto(text);
+        SlackReqDto webhookDto = SlackReqDto.builder()
+                .embeds(List.of(
+                        SlackReqDto.Embeds.builder()
+                                .title("Error Log Detected")
+                                .description(text)
+                                .color("15865880")
+                                .author(SlackReqDto.Embeds.Author.builder()
+                                        .name(NetworkUtils.getRealIpAddress())
+                                        .build())
+                                .build()
+                ))
+                .build();
         byte[] bytes = new ObjectMapper().writeValueAsBytes(webhookDto);
 
         postMessage(webhookUri, "application/json", bytes);
