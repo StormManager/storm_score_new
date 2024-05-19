@@ -40,11 +40,11 @@ public class RoomJoinRepository {
     public Page<RoomGetListResDto> getRoomList(RoomGetListReqDto roomGetListReqDto, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (CustomUtils.isNotNullAndBlank(roomGetListReqDto.getTitle())) {
+        if (CustomUtils.isNotNullAndNotBlank(roomGetListReqDto.getTitle())) {
             builder.and(room.title.contains(roomGetListReqDto.getTitle()));
         }
 
-        if (CustomUtils.isNotNullAndBlank(roomGetListReqDto.getCreator())) {
+        if (CustomUtils.isNotNullAndNotBlank(roomGetListReqDto.getCreator())) {
             builder.and(user.nickName.eq(roomGetListReqDto.getCreator()));
         }
 

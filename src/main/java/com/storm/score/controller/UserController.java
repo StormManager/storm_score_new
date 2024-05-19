@@ -41,11 +41,21 @@ public class UserController {
     }
 
     @Operation(summary = "아이디 중복 체크", description = "아이디 중복 체크를 진행합니다.")
-    @GetMapping("/check")
+    @GetMapping("/check-email")
     public CommonResDto<Boolean> check(
             @Parameter @RequestParam String email
     ) {
         Boolean data = this.userService.checkEmail(email);
+
+        return CommonResDto.success(data);
+    }
+
+    @Operation(summary = "닉네임 중복 체크", description = "닉네임 중복 체크를 진행합니다.")
+    @GetMapping("/check-nickname")
+    public CommonResDto<Boolean> checkNickname(
+            @Parameter @RequestParam String nickName
+    ) {
+        Boolean data = this.userService.checkNickName(nickName);
 
         return CommonResDto.success(data);
     }

@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -38,7 +37,7 @@ public class RoomController {
     @Operation(summary = "방 생성", description = "방을 생성합니다.")
     @PostMapping("")
     public CommonResDto<Long> createRoom(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Parameter @RequestBody RoomCreateReqDto roomCreateReqDto
     ) {
         Long data = this.roomService.createRoom(roomCreateReqDto, userDetails);
@@ -60,7 +59,7 @@ public class RoomController {
             "sort 옵션 사용 X (최신순으로 정렬(DESC)됩니다. 무슨 값을 넣어도 무시됨)")
     @GetMapping("/{roomId}/message")
     public CommonResDto<Page<MessageDto>> getMessageDetail(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Parameter @PathVariable Long roomId,
             @ParameterObject @PageableDefault Pageable pageable
     ) {
@@ -85,7 +84,7 @@ public class RoomController {
     @Operation(summary = "방 참가", description = "방에 참가합니다.")
     @PatchMapping("/{roomId}/join")
     public CommonResDto<Void> joinRoom(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         this.roomService.joinRoom(roomId, userDetails);
@@ -96,7 +95,7 @@ public class RoomController {
     @Operation(summary = "방 나가기", description = "방에서 나갑니다.")
     @PatchMapping("/{roomId}/leave")
     public CommonResDto<Void> leaveRoom(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         this.roomService.leaveRoom(roomId, userDetails);
@@ -107,7 +106,7 @@ public class RoomController {
     @Operation(summary = "방 삭제", description = "방을 삭제합니다.")
     @DeleteMapping("/{roomId}")
     public CommonResDto<Void> deleteRoom(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @Parameter @PathVariable Long roomId
     ) {
         this.roomService.deleteRoom(roomId, userDetails);

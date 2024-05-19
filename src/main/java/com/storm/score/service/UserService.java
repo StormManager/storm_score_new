@@ -73,6 +73,10 @@ public class UserService {
         return getUserEntityService.existsByEmail(email);
     }
 
+    public boolean checkNickName(String nickName) {
+        return getUserEntityService.existsByNickName(nickName);
+    }
+
     @Transactional(readOnly = true)
     public String login(UserLoginReqDto reqDto) {
         User user = getUserEntityService.getUser(reqDto.getEmail());

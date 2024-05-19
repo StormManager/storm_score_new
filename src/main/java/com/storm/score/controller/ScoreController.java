@@ -4,8 +4,10 @@ import com.storm.score.dto.CommonResDto;
 import com.storm.score.dto.ScoreCreateReqDto;
 import com.storm.score.dto.ScoreGetListReqDto;
 import com.storm.score.dto.ScoreGetListResDto;
+import com.storm.score.security.UserDetailsImpl;
 import com.storm.score.service.ScoreService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,10 +54,11 @@ public class ScoreController {
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영 복사본.jpg'""")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CommonResDto<Long> createScore(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestPart(name = "fileList", required=false) List<MultipartFile> fileList,
             @RequestPart(name = "reqDto") @Valid ScoreCreateReqDto scoreCreateReqDto
     ) {
-        Long data = this.scoreService.createScore(fileList, scoreCreateReqDto);
+        Long data = this.scoreService.createScore(fileList, scoreCreateReqDto, userDetails);
         return CommonResDto.success(data);
     }
 
@@ -71,19 +75,21 @@ public class ScoreController {
                                                   "- ASC : 오름차순")
     @GetMapping("list")
     public CommonResDto<Page<ScoreGetListResDto>> getScoreList(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @ParameterObject @ModelAttribute @Valid ScoreGetListReqDto reqDto,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<ScoreGetListResDto> data = this.scoreService.getScoreList(reqDto, pageable);
+        Page<ScoreGetListResDto> data = this.scoreService.getScoreList(reqDto, pageable, userDetails);
         return CommonResDto.success(data);
     }
 
     @Operation(summary = "악보 삭제", description = "악보를 삭제합니다.")
     @DeleteMapping()
     public CommonResDto<Void> deleteScore(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestParam Long scoreId
     ) {
-        this.scoreService.deleteScore(scoreId);
+        this.scoreService.deleteScore(scoreId,userDetails);
 
         return CommonResDto.success();
     }

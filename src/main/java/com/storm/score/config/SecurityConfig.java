@@ -53,6 +53,9 @@ public class SecurityConfig {
             "/user/check",
             "/user/email-auth",
             "/user/find-password",
+
+            "/developer/**",
+
             "/swagger-ui/**",
             "/v3/api-docs/**",
     };
