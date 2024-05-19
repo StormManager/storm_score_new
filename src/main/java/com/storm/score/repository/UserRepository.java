@@ -12,11 +12,16 @@ import java.util.Optional;
  * date           : 2024/05/02
  * description    :
  * ===========================================================
- * DATE              AUTHOR             NOTE
+ * lDATE              AUTHOR            NOTE
  * -----------------------------------------------------------
- * 2024/05/02        ojy       최초 생성
+ * 2024/05/02        ojy                최초 생성
  */
+
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUserName(String userName);
+  boolean existsByEmail(String email);
+
+  boolean existsByNickName(String nickName);
+
+  Optional<User> findByEmail(String userName);
 }

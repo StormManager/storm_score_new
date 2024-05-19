@@ -1,6 +1,7 @@
 package com.storm.score.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.storm.score.exception.ResponseCode;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -38,12 +39,12 @@ public class CommonResDto<T> implements Serializable {
 
     // 리턴할 데이터가 있을 때 성공 응답
     public static <T> CommonResDto<T> success(T data) {
-        return new CommonResDto<>("0000", "Success", data);
+        return new CommonResDto<>(ResponseCode.OK.getCode(), ResponseCode.OK.getDefaultMessage(), data);
     }
 
     // 리턴할 데이터가 없을 때 성공 응답
     public static <T> CommonResDto<T> success() {
-        return new CommonResDto<>("0000", "Success");
+        return new CommonResDto<>(ResponseCode.OK.getCode(), ResponseCode.OK.getDefaultMessage());
     }
 
     // 리턴할 데이터가 있을 때 에러 응답

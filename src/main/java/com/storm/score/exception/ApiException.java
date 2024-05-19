@@ -1,11 +1,6 @@
 package com.storm.score.exception;
-/**
- *
- */
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * description    :
@@ -20,17 +15,22 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 
 @Getter
-@JsonIgnoreProperties({"stackTrace", "suppressed", "localizedMessage"})
 public class ApiException extends RuntimeException{
-    private static final long serialVersionUID = 1L;
+    private final ResponseCode responseCode;
+    private final String message;
 
-    private String rspCode;
-    private Object[] args;
-
-    public ApiException(final String rspCode, final Object... args) {
-      this.rspCode = rspCode;
-      this.args = args;
+    // Custom message constructor
+    public ApiException(ResponseCode responseCode, String message) {
+        this.responseCode = responseCode;
+        this.message = message;
     }
+
+    // Default message constructor
+    public ApiException(ResponseCode responseCode) {
+        this.responseCode = responseCode;
+        this.message = responseCode.getDefaultMessage();
+    }
+
 }
 
 

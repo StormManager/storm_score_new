@@ -7,6 +7,7 @@ import com.storm.score.dto.QScoreGetListResDto;
 import com.storm.score.dto.QScoreGetListResDto_ImageJoinDto;
 import com.storm.score.dto.ScoreGetListReqDto;
 import com.storm.score.dto.ScoreGetListResDto;
+import com.storm.score.security.UserDetailsImpl;
 import com.storm.score.utils.CustomUtils;
 import com.storm.score.utils.QueryDslUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static com.storm.score.model.QScore.score;
 import static com.storm.score.model.QScoreImage.scoreImage;
+import static com.storm.score.model.QUser.user;
 
 /**
  * packageName    : com.storm.score.repository
@@ -40,19 +42,23 @@ public class ScoreJoinRepository {
     private final JPAQueryFactory queryFactory;
 
 
-    public Page<ScoreGetListResDto> getScoreList(ScoreGetListReqDto reqDto, Pageable pageable) {
+    public Page<ScoreGetListResDto> getScoreList(ScoreGetListReqDto reqDto, Pageable pageable, UserDetailsImpl userDetails) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (CustomUtils.isNotNullAndBlank(reqDto.getTitle())) {
+        if (CustomUtils.isNotNullAndNotBlank(reqDto.getTitle())) {
             builder.and(score.title.contains(reqDto.getTitle()));
         }
 
-        if (CustomUtils.isNotNullAndBlank(reqDto.getSinger())) {
+        if (CustomUtils.isNotNullAndNotBlank(reqDto.getSinger())) {
             builder.and(score.singer.contains(reqDto.getSinger()));
         }
 
-        if (CustomUtils.isNotNullAndBlank(reqDto.getInstrument())) {
+        if (CustomUtils.isNotNullAndNotBlank(reqDto.getInstrument())) {
             builder.and(score.instrument.contains(reqDto.getInstrument()));
+        }
+
+        if (CustomUtils.isNotNullAndNotBlank(userDetails.getUsername())) {
+            builder.and(user.email.eq(userDetails.getUsername()));
         }
 
         List<ScoreGetListResDto> content = queryFactory.select(
@@ -64,6 +70,7 @@ public class ScoreJoinRepository {
                         )
                 )
                 .from(score)
+                .leftJoin(score.user, user)
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -74,6 +81,7 @@ public class ScoreJoinRepository {
 
         Long count = queryFactory.select(score.count())
                 .from(score)
+                .leftJoin(score.user, user)
                 .where(builder)
                 .fetchFirst();
 

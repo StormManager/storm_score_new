@@ -1,12 +1,13 @@
 package com.storm.score.model;
 
+import com.storm.score.em.UserRole;
+import com.storm.score.model.base_entity.TimeStamped;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * description    :
@@ -21,35 +22,60 @@ import java.util.List;
  */
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
-@Table(name = "USERS")
 @NoArgsConstructor
-public class User {
+@Table(name = "USER")
+public class User extends TimeStamped {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
-  private Long userId;
+  @Column(name = "USER_ID")
+  private Long id;
 
-  @Column(nullable = false)
-  private String userName;
+  @Column(nullable = false, name="NICKNAME")
+  private String nickName;
 
-  @Column(nullable = false)
-  private String userPwd;
-
-  @Column(nullable = false, unique = true, length = 30)
+  @Column(name = "EMAIL")
   private String email;
 
-  @Column(nullable = false)
-  private String phoneNum;
+  @Column(name = "USER_PWD")
+  private String userPwd;
 
-  private String imgUrl;
+  @ElementCollection(fetch = FetchType.EAGER)
+  @Enumerated(value = EnumType.STRING)
+  @JoinTable(name = "USER_ROLE",
+          joinColumns = @JoinColumn(name = "USER_ID"))
+  @Column(name = "ROLE")  // USER_ROLE 테이블의 ROLE 컬럼으로 정상 할당 됨 (에러 무시)
+  private Set<UserRole> userRoleSet = new HashSet<>(Set.of(UserRole.USER));
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<UserRoom> userRoomList;
+  private List<UserRoom> userRoomList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Score> scoreList = new ArrayList<>();
+
+  @Builder
+  public User(String nickName, String email, String userPwd) {
+    this.nickName = nickName;
+    this.email = email;
+    this.userPwd = userPwd;
+  }
+
+  public void updateUserPwd(String userPwd) {
+    this.userPwd = userPwd;
+  }
+
+  public void addRoleList(Collection<String> userRoleList) {
+    for (String role : userRoleList) {
+      this.userRoleSet.add(UserRole.valueOf(role.toUpperCase()));
+    }
+  }
 
   public void addUserRoom(UserRoom userRoom) {
     userRoomList.add(userRoom);
+  }
+
+  public void addScore(Score score) {
+    score.regUser(this);
+    scoreList.add(score);
   }
 }

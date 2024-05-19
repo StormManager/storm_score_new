@@ -42,14 +42,23 @@ public class Score extends TimeStamped {
     @OneToMany(mappedBy = "score", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ScoreImage> scoreImageList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
+
     @Builder
-    public Score(String title, String instrument, String singer) {
+    public Score(String title, String instrument, String singer, User user) {
         this.title = title;
         this.instrument = instrument;
         this.singer = singer;
+        user.addScore(this);
     }
 
     public void addScoreImage(ScoreImage scoreImage) {
         this.scoreImageList.add(scoreImage);
+    }
+
+    public void regUser(User user) {
+        this.user = user;
     }
 }

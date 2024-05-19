@@ -14,7 +14,7 @@ package com.storm.score.utils;
 public class CustomUtils {
     public static final String DEFAULT_PASSWORD = "disable";
 
-    public static boolean isNotNullAndBlank(String str) {
+    public static boolean isNotNullAndNotBlank(String str) {
         return str != null && !str.isBlank();
     }
 

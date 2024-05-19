@@ -2,7 +2,8 @@ package com.storm.score.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
-import com.storm.score.exception.api.S3UploadFailedException;
+import com.storm.score.exception.ApiException;
+import com.storm.score.exception.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,8 @@ public class AwsService {
 
     @Value("${cloud.aws.s3.object-link}")
     private String objectLink;
+    @Value("${cloud.aws.s3.link-start}")
+    private String linkStart;
 
     private static final String DIR = "";
 
@@ -79,13 +82,13 @@ public class AwsService {
 
             return fileName;
         } catch (IOException e) {
-            throw new S3UploadFailedException("S3파일 업로드 실패, bucket 에 남겨진 이미지를 확인하세요.");
+            throw new ApiException(ResponseCode.S3_UPLOAD_FAILED);
         }
     }
 
 
     public void deleteFile(String imgUrl) {
-        if (imgUrl.startsWith("https://hanhae99homework2")) {
+        if (imgUrl.startsWith(this.linkStart)) {
             String fileName = DIR + imgUrl.split("/")[4];
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
         }

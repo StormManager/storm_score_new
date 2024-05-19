@@ -5,7 +5,7 @@ import com.storm.score.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -23,13 +23,14 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class WebSocketController {
     private final WebSocketService webSocketService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/room/{roomId}")
-    @SendTo("/room/{roomId}")
-    public MessageDto sendMessage(
+    public void sendMessage(
             @DestinationVariable Long roomId,
             MessageDto messageDto
     ) {
-        return webSocketService.sendMessage(roomId, messageDto);
+        MessageDto message = webSocketService.sendMessage(roomId, messageDto);
+        simpMessagingTemplate.convertAndSend("/sub/room/" + roomId, message);
     }
 }

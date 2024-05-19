@@ -7,7 +7,7 @@ plugins {
 }
 
 compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -16,13 +16,13 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = '17'
 
 // git submodule 내부에 application.yml 파일 카피를 위한 Gradle Task
-task copyYML(type: Copy) {
-    copy {
-        from './storm_score_sub/src'
-        include '*.yml'
-        into './src/main/resources'
-    }
-}
+//task copyYML(type: Copy) {
+//    copy {
+//        from './storm_score_sub/src'
+//        include '*.yml'
+//        into './src/main/resources'
+//    }
+//}
 // Gradle Build 시 해당 Task를 실행
 project.defaultTasks "copyYML"
 
@@ -58,18 +58,22 @@ dependencies {
     //JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    //SpringDoc
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
     //logback
 //    implementation 'ch.qos.logback:logback-core:1.2.9'
 //    testImplementation 'ch.qos.logback:logback-classic:1.2.9'
 
-
     // spring security
     implementation 'org.springframework.boot:spring-boot-starter-security:3.1.5'
 
-    // JWT
-//    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    // NoClassDefFOundError
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.2'
 
     //Swagger
     implementation 'io.springfox:springfox-swagger2:3.0.0'
