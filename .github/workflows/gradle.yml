@@ -21,7 +21,7 @@ jobs:
 
       - name: Checkout private repository
         run: |
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/StormManager/storm_score_sub.git
+          git clone https://x-access-token:${{ secrets.GN_TOKEN }}@github.com/StormManager/storm_score_sub.git
           cd storm_score_sub/src
           
           cp * ../../src/main/resources/
