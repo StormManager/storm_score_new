@@ -20,10 +20,8 @@ jobs:
           distribution: adopt
 
       - name: Checkout private repository
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone https://x-access-token:${TOKEN}@github.com/StormManager/storm_score_sub.git
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/StormManager/storm_score_sub.git
           cd storm_score_sub/src
           
           cp * ../../src/main/resources/
