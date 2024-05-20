@@ -1,10 +1,8 @@
-version: '3.3'
-
 services:
   web:
 
     container_name: storm-score-new
-    image: wammelier4417/storm-score-new:1.0
+    image: wammelier4417/storm_score_new:1.0
     ports:
       - "8443:8443"
     restart: always

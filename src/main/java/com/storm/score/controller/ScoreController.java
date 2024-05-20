@@ -63,16 +63,20 @@ public class ScoreController {
     }
 
     // 텍스트 블록 사용시 descrption 인식안됨
-    @Operation(summary = "악보 전체조회", description = "악보를 전체 조회합니다. \n\n\n" +
-                                                  "sort 옵션\n" +
-                                                  "- title : 제목\n" +
-                                                  "- singer : 작곡가\n" +
-                                                  "- instrument : 코드\n" +
-                                                  "- createdAt : 생성일자  -- default\n" +
-                                                  "- updatedAt : 수정일자\n" +
-                                                  "\n\n" +
-                                                  "- DESC : 내림차순  -- default\n" +
-                                                  "- ASC : 오름차순")
+    @Operation(summary = "악보 전체조회", description = """
+            악보를 전체 조회합니다.
+
+
+            sort 옵션
+            - title : 제목
+            - singer : 작곡가
+            - instrument : 코드
+            - createdAt : 생성일자  -- default
+            - updatedAt : 수정일자
+
+
+            - DESC : 내림차순  -- default
+            - ASC : 오름차순""")
     @GetMapping("list")
     public CommonResDto<Page<ScoreGetListResDto>> getScoreList(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,

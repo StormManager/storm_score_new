@@ -1,9 +1,6 @@
 package com.storm.score.controller;
 
-import com.storm.score.dto.CommonResDto;
-import com.storm.score.dto.UserLoginReqDto;
-import com.storm.score.dto.UserSignupReqDto;
-import com.storm.score.dto.UserSignupResDto;
+import com.storm.score.dto.*;
 import com.storm.score.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +37,9 @@ public class UserController {
         return CommonResDto.success(data);
     }
 
-    @Operation(summary = "아이디 중복 체크", description = "아이디 중복 체크를 진행합니다.")
+    @Operation(summary = "아이디 중복 체크", description = """
+            아이디 중복 체크를 진행합니다.\\
+            true : 중복 / false : 중복아님""")
     @GetMapping("/check-email")
     public CommonResDto<Boolean> check(
             @Parameter @RequestParam String email
@@ -50,7 +49,12 @@ public class UserController {
         return CommonResDto.success(data);
     }
 
-    @Operation(summary = "닉네임 중복 체크", description = "닉네임 중복 체크를 진행합니다.")
+    @Operation(summary = "닉네임 중복 체크", description = """
+            임시) 체크만함 회원가입시에는 중복 가능
+            
+            닉네임 중복 체크를 진행합니다.
+            
+            true : 중복 / false : 중복아님""")
     @GetMapping("/check-nickname")
     public CommonResDto<Boolean> checkNickname(
             @Parameter @RequestParam String nickName
@@ -70,6 +74,17 @@ public class UserController {
         return CommonResDto.success();
     }
 
+    @Operation(summary = "이메일 인증 확인", description = "이메일 인증 확인을 진행합니다.")
+    @GetMapping("/check-email-auth")
+    public CommonResDto<Void> checkEmailAuth(
+            @Parameter @RequestParam String email,
+            @Parameter @RequestParam String verificationNumber
+    ) {
+        this.userService.checkEmailAuth(email,verificationNumber);
+
+        return CommonResDto.success();
+    }
+
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @GetMapping("/login")
     public CommonResDto<String> login(
@@ -83,10 +98,9 @@ public class UserController {
     @Operation(summary = "비밀번호 변경", description = "비밀번호 변경을 진행합니다.")
     @PatchMapping("/find-password")
     public CommonResDto<Void> changePassword(
-            @Parameter @RequestBody String email,
-            @Parameter @RequestBody String userPwd
+            @Parameter @RequestBody UserChangePasswordReqDto reqDto
     ) {
-        this.userService.changePassword(email, userPwd);
+        this.userService.changePassword(reqDto);
 
         return CommonResDto.success();
     }

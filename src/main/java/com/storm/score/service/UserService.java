@@ -1,5 +1,6 @@
 package com.storm.score.service;
 
+import com.storm.score.dto.UserChangePasswordReqDto;
 import com.storm.score.dto.UserLoginReqDto;
 import com.storm.score.dto.UserSignupReqDto;
 import com.storm.score.dto.UserSignupResDto;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 /**
  * packageName    : com.storm.score.service
@@ -69,6 +72,10 @@ public class UserService {
         emailVerificationService.emailAuth(email);
     }
 
+    public void checkEmailAuth(String email, String verificationNumber) {
+        emailVerificationService.checkEmailAuth(email,verificationNumber);
+    }
+
     public Boolean checkEmail(String email) {
         return getUserEntityService.existsByEmail(email);
     }
@@ -82,7 +89,7 @@ public class UserService {
         User user = getUserEntityService.getUser(reqDto.getEmail());
 
         boolean isMatch = passwordEncoder.matches(reqDto.getUserPwd(), user.getUserPwd());
-        if (!isMatch) throw new ApiException(ResponseCode.INVALID_PASSWORD, "비밀번호가 일치하지 않습니다.");
+        if (!isMatch) throw new ApiException(ResponseCode.PASSWORD_MISMATCH, "비밀번호가 일치하지 않습니다.");
 
         return jwtTokenProvider.createTokenBuilder()
                 .userId(String.valueOf(user.getId()))
@@ -93,10 +100,14 @@ public class UserService {
     }
 
     @Transactional
-    public void changePassword(String email, String userPwd) {
-        User user = getUserEntityService.getUser(email);
+    public void changePassword(UserChangePasswordReqDto reqDto) {
+        User user = getUserEntityService.getUser(reqDto.getEmail());
 
-        user.updateUserPwd(passwordEncoder.encode(userPwd));
+        if (!Objects.equals(reqDto.getPassword(), reqDto.getCheckPassword())){
+            throw new ApiException(ResponseCode.PASSWORD_MISMATCH, "비밀번호가 일치하지 않습니다.");
+        }
+
+        user.updateUserPwd(passwordEncoder.encode(reqDto.getPassword()));
     }
 
 }

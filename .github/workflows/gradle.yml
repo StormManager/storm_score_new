@@ -3,8 +3,8 @@ name: Java CI with Gradle
 on:
   pull_request:
     branches: [ "main" ]  # main으로 PR시 Actions 작동
-#   push:
-#     branches: [ "main" ]  # main으로 push시 Actions 작동
+#  push:
+#    branches: [ "main" ]  # main으로 push시 Actions 작동
 
 jobs:
   build:
@@ -20,15 +20,10 @@ jobs:
           distribution: adopt
 
       - name: Checkout private repository
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone https://x-access-token:${TOKEN}@github.com/StormManager/storm_score_sub.git
+          git clone https://x-access-token:${{ secrets.GN_TOKEN }}@github.com/StormManager/storm_score_sub.git
           cd storm_score_sub/src
-          
           cp * ../../src/main/resources/
-          
-          ls
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
