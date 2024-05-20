@@ -5,7 +5,6 @@ import com.storm.score.exception.ResponseCode;
 import com.storm.score.model.User;
 import com.storm.score.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,11 +25,11 @@ public class GetUserEntityService {
 
     public User getUser(String userName) {
         return userRepository.findByEmail(userName)
-                .orElseThrow(() -> new UsernameNotFoundException(("해당 유저가 없습니다. userName : " + userName)));
+                .orElseThrow(() -> new ApiException(ResponseCode.USER_NOT_FOUND, "해당 유저가 없습니다. userName : " + userName));
     }
     public User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND,"해당 유저가 없습니다. id : " + userId));
+                .orElseThrow(() -> new ApiException(ResponseCode.USER_NOT_FOUND, "해당 유저가 없습니다. id : " + userId));
     }
 
     public boolean existsByEmail(String email) {

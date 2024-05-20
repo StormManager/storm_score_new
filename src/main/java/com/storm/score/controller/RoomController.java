@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,10 @@ public class RoomController {
         return CommonResDto.success(data);
     }
 
-    @Operation(summary = "채팅 내역 상세 조회", description = "이전 채팅 내역을 조회합니다." +
-            "sort 옵션 사용 X (최신순으로 정렬(DESC)됩니다. 무슨 값을 넣어도 무시됨)")
+    @Operation(summary = "채팅 내역 상세 조회", description = """
+            이전 채팅 내역을 조회합니다.
+            
+            sort 옵션 사용 X (최신순으로 정렬(DESC)됩니다. 무슨 값을 넣어도 무시됨)""")
     @GetMapping("/{roomId}/message")
     public CommonResDto<Page<MessageDto>> getMessageDetail(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -67,15 +70,21 @@ public class RoomController {
         return CommonResDto.success(data);
     }
 
-    @Operation(summary = "방 목록 조회", description = "방 목록을 조회합니다." +
-            "sort 옵션" +
-            "title, creator, maxCapacity, createdAt, updatedAt" +
-            "direction 옵션" +
-            "ASC, DESC")
+    @Operation(summary = "방 목록 조회", description = """
+            방 목록을 조회합니다.
+            sort 옵션
+            - title : 제목
+            - creator : 생성자
+            - maxCapacity : 최대 인원
+            - createdAt : 생성일자  -- default
+            - updatedAt : 수정일자
+            
+            - DESC : 내림차순  -- default
+            - ASC : 오름차순""")
     @GetMapping("/list")
     public CommonResDto<Page<RoomGetListResDto>> getRoomList(
             @Parameter @ModelAttribute RoomGetListReqDto roomGetListReqDto,
-            @ParameterObject @PageableDefault Pageable pageable
+            @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<RoomGetListResDto> data = this.roomService.getRoomList(roomGetListReqDto, pageable);
         return CommonResDto.success(data);

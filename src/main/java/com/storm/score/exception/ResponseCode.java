@@ -18,6 +18,7 @@ public enum ResponseCode {
     BINDING_FAILED(HttpStatus.BAD_REQUEST, "400_0", "유효성 검사 실패"),
     REQUIRED_BODY(HttpStatus.BAD_REQUEST, "400_1", "Request Body가 필요합니다."),
     INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "400_2", "Request body가 잘못되었습니다."),
+    PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "400_3", "비밀번호가 일치하지 않습니다."),
 
     /* 401 */
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "401_0", "비밀번호가 일치하지 않습니다."),
@@ -47,6 +48,7 @@ public enum ResponseCode {
     INTERNAL_SERVER_LOGIC_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_2", "서버측 로직 에러"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_3", "서버 에러, 반드시 백엔드 호출할것!"),
     OPTIMISTIC_LOCKING_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "500_4", "낙관적 락 발~동!"),
+    EMAIL_SEND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_5", "이메일 전송 중 에러 발생"),
     ;
 
     private final HttpStatus status;

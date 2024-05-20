@@ -52,6 +52,9 @@ public class SecurityConfig {
             "/user/signup",
             "/user/check",
             "/user/email-auth",
+            "/user/check-email-auth",
+            "/user/check-email",
+            "/user/check-nickname",
             "/user/find-password",
 
             "/developer/**",

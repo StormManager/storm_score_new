@@ -16,13 +16,13 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = '17'
 
 // git submodule 내부에 application.yml 파일 카피를 위한 Gradle Task
-//task copyYML(type: Copy) {
-//    copy {
-//        from './storm_score_sub/src'
-//        include '*.yml'
-//        into './src/main/resources'
-//    }
-//}
+tasks.register('copyYML', Copy) {
+    copy {
+        from './storm_score_sub/src'
+        include '*.yml'
+        into './src/main/resources'
+    }
+}
 // Gradle Build 시 해당 Task를 실행
 project.defaultTasks "copyYML"
 
@@ -94,6 +94,9 @@ dependencies {
     //S3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'org.apache.tika:tika-core:2.4.1'
+
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {
