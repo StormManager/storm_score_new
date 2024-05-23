@@ -122,4 +122,5 @@ public class ScoreJoinRepository {
             scoreGetListResDto.regImageUrl(url);
         }
     }
+
 }

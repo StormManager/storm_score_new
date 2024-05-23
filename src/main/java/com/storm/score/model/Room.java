@@ -61,9 +61,12 @@ public class Room extends TimeStamped {
 
     public void addUserRoom(UserRoom userRoom) {
         this.userRoomList.add(userRoom);
+        userRoom.regRoom(this);
     }
 
     public void addMessage(Message message) {
         this.messageList.add(message);
+        message.regRoom(this);
     }
+
 }

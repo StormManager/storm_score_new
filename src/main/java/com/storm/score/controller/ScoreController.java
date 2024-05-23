@@ -1,9 +1,6 @@
 package com.storm.score.controller;
 
-import com.storm.score.dto.CommonResDto;
-import com.storm.score.dto.ScoreCreateReqDto;
-import com.storm.score.dto.ScoreGetListReqDto;
-import com.storm.score.dto.ScoreGetListResDto;
+import com.storm.score.dto.*;
 import com.storm.score.security.UserDetailsImpl;
 import com.storm.score.service.ScoreService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +46,7 @@ public class ScoreController {
             ex) \\
             curl -X POST 'http://localhost:8443/score' \\\\ \\
                         -H 'accept: \\*/\\*' \\\\ \\
+                        -H 'Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsIm5pY2tOYW1lIjoidGVzdCIsInJvbGVMaXN0IjpbIkFETUlOIiwiVVNFUiJdLCJpYXQiOjE3MTYwMjM3OTYsImV4cCI6MTcxNjg4Nzc5Nn0.JPzA0yDZGjlg4u26yrJUi3L8hHmjm9oT8Ka_ELzCqLw' \\\\ \\
                         -F 'reqDto={"title": "나비", "instrument": "C", "singer": "조정현"};type=application/json' \\\\ \\
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영.jpg' \\\\ \\
                         -F 'fileList=@/Users/ojy/zeki/resource/오재영 복사본.jpg'""")
@@ -96,6 +94,16 @@ public class ScoreController {
         this.scoreService.deleteScore(scoreId,userDetails);
 
         return CommonResDto.success();
+    }
+
+    @Operation(summary = "악보 상세조회", description = "악보를 상세 조회합니다.")
+    @GetMapping("/{scoreId}")
+    public CommonResDto<ScoreGetDetailResDto> getScore(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable Long scoreId
+    ) {
+        ScoreGetDetailResDto data = this.scoreService.getScoreDetail(scoreId, userDetails);
+        return CommonResDto.success(data);
     }
 }
 

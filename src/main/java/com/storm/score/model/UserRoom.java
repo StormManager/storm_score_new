@@ -8,25 +8,32 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(name = "USERROOM", schema = "STORM_SCORE")
+@Table(name = "USER_ROOM", schema = "STORM_SCORE")
 public class UserRoom {
-    @EmbeddedId
-    private UserRoomId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ROOM_ID", nullable = false)
+    private Long id;
 
-    @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private User user;
-
-    @MapsId("roomId")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ROOM_ID", nullable = false)
     private Room room;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
     @Builder
-    public UserRoom(User user, Room room) {
-        user.addUserRoom(this);
+    public UserRoom(Room room, User user) {
         room.addUserRoom(this);
+        user.addUserRoom(this);
+    }
+
+    public void regRoom(Room room) {
+        this.room = room;
+    }
+
+    public void regUser(User user) {
+        this.user = user;
     }
 }

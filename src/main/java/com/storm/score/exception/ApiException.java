@@ -30,7 +30,6 @@ public class ApiException extends RuntimeException{
         this.responseCode = responseCode;
         this.message = responseCode.getDefaultMessage();
     }
-
 }
 
 

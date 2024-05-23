@@ -53,6 +53,9 @@ public class User extends TimeStamped {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Score> scoreList = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Message> messageList = new ArrayList<>();
+
   @Builder
   public User(String nickName, String email, String userPwd) {
     this.nickName = nickName;
@@ -72,10 +75,18 @@ public class User extends TimeStamped {
 
   public void addUserRoom(UserRoom userRoom) {
     userRoomList.add(userRoom);
+    userRoom.regUser(this);
   }
 
   public void addScore(Score score) {
-    score.regUser(this);
     scoreList.add(score);
+    score.regUser(this);
   }
+
+  public void addMessage(Message message) {
+    messageList.add(message);
+    message.regUser(this);
+  }
+
+
 }

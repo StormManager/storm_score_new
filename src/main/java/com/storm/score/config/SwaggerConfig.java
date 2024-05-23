@@ -38,8 +38,8 @@ public class SwaggerConfig {
                     10000일 짜리 토큰 :
                     eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsIm5pY2tOYW1lIjoidGVzdCIsInJvbGVMaXN0IjpbIkFETUlOIiwiVVNFUiJdLCJpYXQiOjE3MTYwMjM3OTYsImV4cCI6MTcxNjg4Nzc5Nn0.JPzA0yDZGjlg4u26yrJUi3L8hHmjm9oT8Ka_ELzCqLw
                     
-                    email : test@email.com
-                    password : test1234
+                    - email : test@email.com
+                    - password : test1234
                     """)
             .version("1.0");
 

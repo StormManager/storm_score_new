@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : com.storm.score.dto
@@ -22,17 +23,18 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(name = "Room Create Req Dto")
 public class RoomCreateReqDto {
     @Size(min = 1, max = 20)
     @NotBlank
     @Schema(description = "방 이름", example = "방 이름")
-    private final String title;
+    private String title;
 
     @NotNull
     @Schema(description = "최대 인원", example = "10")
-    private final Integer maxCapacity;
+    private Integer maxCapacity;
 
     @Schema(description = "비밀번호", example = "disable")
-    private final String password;
+    private String password;
 }

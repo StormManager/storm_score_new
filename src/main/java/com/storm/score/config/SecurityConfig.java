@@ -57,6 +57,8 @@ public class SecurityConfig {
             "/user/check-nickname",
             "/user/find-password",
 
+            "/ws/**",
+
             "/developer/**",
 
             "/swagger-ui/**",
