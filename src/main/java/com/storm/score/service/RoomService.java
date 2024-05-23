@@ -11,6 +11,7 @@ import com.storm.score.model.User;
 import com.storm.score.model.UserRoom;
 import com.storm.score.repository.RoomJoinRepository;
 import com.storm.score.repository.RoomRepository;
+import com.storm.score.repository.UserRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+
+import static com.storm.score.utils.CustomUtils.DEFAULT_PASSWORD;
 
 /**
  * packageName    : com.storm.score.service
@@ -36,9 +39,11 @@ import java.util.Objects;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomJoinRepository roomJoinRepository;
+    private final UserRoomRepository userRoomRepository;
 
     private final GetUserEntityService getUserEntityService;
 
+    @Transactional
     public Long createRoom(RoomCreateReqDto roomCreateReqDto, UserDetails userDetails) {
         User user = getUserEntityService.getUser(userDetails.getUsername());
 
@@ -49,7 +54,11 @@ public class RoomService {
                 .maxCapacity(roomCreateReqDto.getMaxCapacity())
                 .build();
 
-        return this.roomRepository.save(room).getId();
+        this.roomRepository.save(room);
+
+        this.joinRoom(room.getId(), roomCreateReqDto.getPassword(), userDetails);
+
+        return room.getId();
     }
 
     @Transactional(readOnly = true)
@@ -60,7 +69,7 @@ public class RoomService {
         room.getUserRoomList().stream()
                 .filter(userRoomEntity -> Objects.equals(userRoomEntity.getUser().getId(), user.getId()))
                 .findFirst()
-                .orElseThrow(() -> new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION,"방에 참여하지 않은 유저입니다."));
+                .orElseThrow(() -> new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "방에 참여하지 않은 유저입니다."));
 
 
         return RoomGetDetailResDto.builder()
@@ -78,14 +87,14 @@ public class RoomService {
         User user = getUserEntityService.getUser(userDetails.getUsername());
 
         if (!Objects.equals(room.getCreatedUserId(), user.getId())) {
-            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION,"방을 삭제할 권한이 없습니다.");
+            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "방을 삭제할 권한이 없습니다.");
         }
 
         this.roomRepository.delete(room);
     }
 
     @Transactional
-    public void joinRoom(Long roomId, UserDetails userDetails) {
+    public void joinRoom(Long roomId, String password, UserDetails userDetails) {
         Room room = this.getRoom(roomId);
         User user = getUserEntityService.getUser(userDetails.getUsername());
 
@@ -93,14 +102,17 @@ public class RoomService {
                 .anyMatch(userRoom -> Objects.equals(userRoom.getUser().getId(), user.getId()));
 
         if (isEnter) {
-            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION,"이미 방에 참여한 유저입니다.");
+            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "이미 방에 참여한 유저입니다.");
+        }
+
+        if (!Objects.equals(room.getPassword(), password) && !Objects.equals(room.getPassword(), DEFAULT_PASSWORD)) {
+            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "비밀번호가 일치하지 않습니다.");
         }
 
         UserRoom.builder()
                 .user(user)
                 .room(room)
                 .build();
-        // TODO : userRoom save test
     }
 
     @Transactional
@@ -108,25 +120,28 @@ public class RoomService {
         Room room = this.getRoom(roomId);
         User user = getUserEntityService.getUser(userDetails.getUsername());
 
-        boolean isEnter = room.getUserRoomList().stream()
-                .anyMatch(userRoom -> Objects.equals(userRoom.getUser().getId(), user.getId()));
+        UserRoom userRoom = room.getUserRoomList().stream()
+                .filter(data ->
+                        Objects.equals(data.getUser().getId(), user.getId()))
+                .findFirst()
+                .orElseThrow(
+                    () -> new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "방에 참여하지 않은 유저입니다.")
+                );
 
-        if (!isEnter) {
-            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION,"방에 참여하지 않은 유저입니다.");
-        }
+        room.getUserRoomList().remove(userRoom);
+        user.getUserRoomList().remove(userRoom);
 
-        room.getUserRoomList().removeIf(userRoom -> Objects.equals(userRoom.getUser().getId(), user.getId()));
-        // TODO : userRoom remove test
+        this.userRoomRepository.delete(userRoom);
     }
 
     public Page<RoomGetListResDto> getRoomList(RoomGetListReqDto roomGetListReqDto, Pageable pageable) {
 
-        return roomJoinRepository.getRoomList(roomGetListReqDto,pageable);
+        return roomJoinRepository.getRoomList(roomGetListReqDto, pageable);
     }
 
-    public Room getRoom(Long roomId){
+    public Room getRoom(Long roomId) {
         return this.roomRepository.findById(roomId)
-                .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND,"방을 찾을 수 없습니다. id: " + roomId));
+                .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND, "방을 찾을 수 없습니다. id: " + roomId));
     }
 
 }

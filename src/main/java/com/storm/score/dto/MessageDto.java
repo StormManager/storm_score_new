@@ -1,9 +1,10 @@
 package com.storm.score.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.storm.score.em.MessageType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * packageName    : com.storm.score.dto
@@ -20,19 +21,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MessageDto {
     private String userName;
-    private String messageType;
-    private String content;
+    private String text;
+    private Long scoreId;
+    private List<ScoreGetDetailResDto.ScoreImageListDto> scoreImageList;
 
 
-    public MessageDto(String userName, String messageType, String content) {
-        this.userName = userName;
-        this.messageType = messageType;
-        this.content = content;
-    }
     @QueryProjection
-    public MessageDto(String userName, MessageType messageType, String content) {
+    public MessageDto(String userName, String text, Long scoreId) {
         this.userName = userName;
-        this.messageType = messageType.name();
-        this.content = content;
+        this.text = text;
+        this.scoreId = scoreId;
     }
+
+    public void regScoreList(List<ScoreGetDetailResDto.ScoreImageListDto> scoreList) {
+        this.scoreImageList = scoreList;
+    }
+
 }

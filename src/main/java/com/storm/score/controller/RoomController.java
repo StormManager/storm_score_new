@@ -72,6 +72,7 @@ public class RoomController {
 
     @Operation(summary = "방 목록 조회", description = """
             방 목록을 조회합니다.
+            
             sort 옵션
             - title : 제목
             - creator : 생성자
@@ -79,24 +80,30 @@ public class RoomController {
             - createdAt : 생성일자  -- default
             - updatedAt : 수정일자
             
+            
             - DESC : 내림차순  -- default
             - ASC : 오름차순""")
     @GetMapping("/list")
     public CommonResDto<Page<RoomGetListResDto>> getRoomList(
-            @Parameter @ModelAttribute RoomGetListReqDto roomGetListReqDto,
+            @ParameterObject @ModelAttribute RoomGetListReqDto roomGetListReqDto,
             @ParameterObject @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<RoomGetListResDto> data = this.roomService.getRoomList(roomGetListReqDto, pageable);
         return CommonResDto.success(data);
     }
 
-    @Operation(summary = "방 참가", description = "방에 참가합니다.")
+    @Operation(summary = "방 참가", description = """
+            방에 참가합니다.
+            
+            공개방일 경우 password는 무시됨.
+            """)
     @PatchMapping("/{roomId}/join")
     public CommonResDto<Void> joinRoom(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Parameter @PathVariable Long roomId
+            @Parameter @PathVariable Long roomId,
+            @Parameter @RequestParam(required = false) String password
     ) {
-        this.roomService.joinRoom(roomId, userDetails);
+        this.roomService.joinRoom(roomId, password, userDetails);
 
         return CommonResDto.success();
     }

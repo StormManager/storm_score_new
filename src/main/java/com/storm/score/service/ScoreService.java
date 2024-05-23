@@ -1,6 +1,7 @@
 package com.storm.score.service;
 
 import com.storm.score.dto.ScoreCreateReqDto;
+import com.storm.score.dto.ScoreGetDetailResDto;
 import com.storm.score.dto.ScoreGetListReqDto;
 import com.storm.score.dto.ScoreGetListResDto;
 import com.storm.score.exception.ApiException;
@@ -80,5 +81,33 @@ public class ScoreService {
     public Score getScore(Long scoreId) {
         return scoreRepository.findById(scoreId)
                 .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND, "악보를 찾을 수 없습니다. id: " + scoreId));
+    }
+
+    @Transactional(readOnly = true)
+    public ScoreGetDetailResDto getScoreDetail(Long scoreId, UserDetailsImpl userDetails) {
+        Score score = this.getScore(scoreId);
+        User user = getUserEntityService.getUser(userDetails.getUsername());
+
+        if (!score.getUser().getId().equals(user.getId())) {
+            throw new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "조회 권한이 없습니다. user nickname: " + user.getNickName() + ", score id: " + scoreId);
+        }
+
+        ScoreGetDetailResDto result = ScoreGetDetailResDto.builder()
+                .scoreId(score.getId())
+                .title(score.getTitle())
+                .instrument(score.getInstrument())
+                .singer(score.getSinger())
+                .build();
+
+        result.regScoreImageList(
+                score.getScoreImageList().stream()
+                        .map(scoreImage -> ScoreGetDetailResDto.ScoreImageListDto.builder()
+                                .scoreImageId(scoreImage.getId())
+                                .url(scoreImage.getUrl())
+                                .index(scoreImage.getIndex())
+                                .build())
+                        .toList()
+        );
+        return result;
     }
 }

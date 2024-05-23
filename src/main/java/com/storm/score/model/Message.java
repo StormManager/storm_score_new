@@ -1,6 +1,5 @@
 package com.storm.score.model;
 
-import com.storm.score.em.MessageType;
 import com.storm.score.model.base_entity.TimeStampedOnlyCreatedAt;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -25,18 +24,30 @@ public class Message extends TimeStampedOnlyCreatedAt {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "MESSAGE_TYPE", nullable = false)
-    private MessageType messageType;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "SCORE_ID")
+    private Score score;
 
-    @Column(name = "CONTENT", nullable = false)
-    private String content;
+    @Column(name = "TEXT", nullable = false)
+    private String text;
 
     @Builder
-    public Message(Room room, User user, MessageType messageType, String content) {
-        this.room = room;   // TODO : 양방향 고려
-        this.user = user;   // TODO : 양방향 고려
-        this.messageType = messageType;
-        this.content = content;
+    public Message(Room room, User user, Score score, String text) {
+        room.addMessage(this);
+        user.addMessage(this);
+        score.addMessage(this);
+        this.text = text;
+    }
+
+    public void regRoom(Room room) {
+        this.room = room;
+    }
+
+    public void regUser(User user) {
+        this.user = user;
+    }
+
+    public void regScore(Score score) {
+        this.score = score;
     }
 }

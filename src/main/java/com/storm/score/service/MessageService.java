@@ -1,11 +1,11 @@
 package com.storm.score.service;
 
 import com.storm.score.dto.MessageDto;
-import com.storm.score.em.MessageType;
 import com.storm.score.exception.ApiException;
 import com.storm.score.exception.ResponseCode;
 import com.storm.score.model.Message;
 import com.storm.score.model.Room;
+import com.storm.score.model.Score;
 import com.storm.score.model.User;
 import com.storm.score.repository.MessageJoinRepository;
 import com.storm.score.repository.MessageRepository;
@@ -35,18 +35,19 @@ public class MessageService {
 
     private final RoomService roomService;
     private final GetUserEntityService getUserEntityService;
+    private final ScoreService scoreService;
 
     @Transactional
     public void saveMessage(Long roomId, MessageDto messageDto) {
         User user = getUserEntityService.getUser(messageDto.getUserName());
-
         Room room = roomService.getRoom(roomId);
+        Score score = scoreService.getScore(messageDto.getScoreId());
 
         Message message = Message.builder()
                 .user(user)
                 .room(room)
-                .messageType(MessageType.valueOf(messageDto.getMessageType()))
-                .content(messageDto.getContent())
+                .score(score)
+                .text(messageDto.getText())
                 .build();
 
         messageRepository.save(message);

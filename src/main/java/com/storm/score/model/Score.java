@@ -42,6 +42,9 @@ public class Score extends TimeStamped {
     @OneToMany(mappedBy = "score", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ScoreImage> scoreImageList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "score", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Message> messageList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
@@ -60,5 +63,10 @@ public class Score extends TimeStamped {
 
     public void regUser(User user) {
         this.user = user;
+    }
+
+    public void addMessage(Message message) {
+        this.messageList.add(message);
+        message.regScore(this);
     }
 }

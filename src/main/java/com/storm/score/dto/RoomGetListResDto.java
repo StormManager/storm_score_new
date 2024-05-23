@@ -1,7 +1,9 @@
 package com.storm.score.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -20,6 +22,8 @@ import static com.storm.score.utils.CustomUtils.DEFAULT_PASSWORD;
  * 2024/05/05        ojy       최초 생성
  */
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoomGetListResDto {
     private Long roomId;
     private String title;
