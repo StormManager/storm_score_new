@@ -3,6 +3,7 @@ package com.storm.score.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : com.storm.score.dto
@@ -17,6 +18,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(name = "User Login Request")
 public class UserLoginReqDto {
     @Schema(description = "이메일", example = "test@email.com")

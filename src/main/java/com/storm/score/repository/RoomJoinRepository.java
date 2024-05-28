@@ -1,6 +1,7 @@
 package com.storm.score.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -15,11 +16,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.storm.score.model.QRoom.room;
 import static com.storm.score.model.QUser.user;
+import static com.storm.score.model.QUserRoom.userRoom;
 
 /**
  * packageName    : com.storm.score.repository
@@ -85,6 +89,8 @@ public class RoomJoinRepository {
 
         List<RoomGetListResDto> content = query.fetch();
 
+        this.addJoinNicknameList(content);
+
         Long count = queryFactory.select(room.count())
                 .from(room)
                 .leftJoin(user).on(room.createdUserId.eq(user.id))
@@ -92,5 +98,34 @@ public class RoomJoinRepository {
                 .fetchFirst();
 
         return new PageImpl<>(content, pageable, count);
+    }
+
+    private void addJoinNicknameList(List<RoomGetListResDto> content) {
+        List<Long> roomIdList = content.stream()
+                .map(RoomGetListResDto::getRoomId)
+                .toList();
+
+        List<Tuple> result = queryFactory.select(
+                        room.id,
+                        user.nickName
+                )
+                .from(room)
+                .leftJoin(room.userRoomList, userRoom)
+                .leftJoin(userRoom.user, user)
+                .where(room.id.in(roomIdList))
+                .fetch();
+
+        LinkedMultiValueMap<Long, String> resultMap = result.stream()
+                .filter(tuple -> tuple.get(room.id) != null)
+                .collect(Collectors.groupingBy(
+                        tuple -> tuple.get(room.id),
+                        LinkedMultiValueMap::new,
+                        Collectors.mapping(tuple -> tuple.get(user.nickName), Collectors.toList())
+                ));
+
+        content.forEach(reqDto -> {
+            List<String> joinNicknameList = resultMap.getOrDefault(reqDto.getRoomId(), List.of());
+            reqDto.addAllJoinNickname(joinNicknameList);
+        });
     }
 }

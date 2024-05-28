@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.storm.score.utils.CustomUtils.DEFAULT_PASSWORD;
@@ -33,6 +35,8 @@ public class RoomGetListResDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private List<String> joinNicknameList = new ArrayList<>();
+
     @QueryProjection
     public RoomGetListResDto(Long roomId, String title, Integer maxCapacity, String creator, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.roomId = roomId;
@@ -42,5 +46,9 @@ public class RoomGetListResDto {
         this.isPrivate = Objects.equals(password, DEFAULT_PASSWORD);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void addAllJoinNickname(List<String> joinNicknameList) {
+        this.joinNicknameList.addAll(joinNicknameList);
     }
 }

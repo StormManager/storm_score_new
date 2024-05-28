@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.storm.score.utils.CustomUtils.DEFAULT_PASSWORD;
@@ -71,6 +72,9 @@ public class RoomService {
                 .findFirst()
                 .orElseThrow(() -> new ApiException(ResponseCode.UNMODIFIABLE_INFORMATION, "방에 참여하지 않은 유저입니다."));
 
+        List<String> joinNicknameList = room.getUserRoomList().stream()
+                .map(userRoom -> userRoom.getUser().getNickName())
+                .toList();
 
         return RoomGetDetailResDto.builder()
                 .roomId(room.getId())
@@ -79,6 +83,7 @@ public class RoomService {
                 .roomCreatedAt(room.getCreatedAt())
                 .roomUserCount(room.getUserRoomList().size())
                 .roomMaxCapacity(room.getMaxCapacity())
+                .joinNicknameList(joinNicknameList)
                 .build();
     }
 

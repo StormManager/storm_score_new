@@ -1,7 +1,7 @@
 package com.storm.score.controller;
 
 import com.storm.score.dto.CommonResDto;
-import com.storm.score.dto.UserSignupReqDto;
+import com.storm.score.dto.DeveloperSignupReqDto;
 import com.storm.score.dto.UserSignupResDto;
 import com.storm.score.exception.ApiException;
 import com.storm.score.exception.ResponseCode;
@@ -44,7 +44,7 @@ public class DeveloperController {
     @Operation(summary = "회원가입 (개발자용)", description = "인증 없이 회원가입 진행")
     @PostMapping("/signup")
     public CommonResDto<UserSignupResDto> signup(
-            @Parameter @RequestBody UserSignupReqDto reqDto
+            @Parameter @RequestBody DeveloperSignupReqDto reqDto
     ) {
         boolean isExist = getUserEntityService.existsByEmail(reqDto.getEmail());
         if (isExist) throw new ApiException(ResponseCode.DUPLICATED_USER_ID, "이미 존재하는 이메일입니다. email: " + reqDto.getEmail());

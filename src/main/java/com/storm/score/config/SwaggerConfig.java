@@ -33,14 +33,25 @@ public class SwaggerConfig {
     Info info = new Info()
             .title("스톰 악보앱 API")
             .description("""
-                    사용자가 함께 악보를 공유하고 등록할수 있도록 하는 서비스입니다.
-                    
-                    10000일 짜리 토큰 :
-                    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsIm5pY2tOYW1lIjoidGVzdCIsInJvbGVMaXN0IjpbIkFETUlOIiwiVVNFUiJdLCJpYXQiOjE3MTYwMjM3OTYsImV4cCI6MTcxNjg4Nzc5Nn0.JPzA0yDZGjlg4u26yrJUi3L8hHmjm9oT8Ka_ELzCqLw
-                    
-                    - email : test@email.com
-                    - password : test1234
-                    """)
+                  사용자가 함께 악보를 공유하고 등록할 수 있도록 하는 서비스입니다.
+                  
+                  ### 테스트 계정 정보
+                  - **이메일**: test@email.com
+                  - **비밀번호**: test1234
+                  
+                  ### 10000일짜리 토큰
+                  eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsIm5pY2tOYW1lIjoidGVzdCIsInJvbGVMaXN0IjpbIkFETUlOIiwiVVNFUiJdLCJpYXQiOjE3MTYwMjM3OTYsImV4cCI6MTcxNjg4Nzc5Nn0.JPzA0yDZGjlg4u26yrJUi3L8hHmjm9oT8Ka_ELzCqLw
+                  
+                  ### 변경 사항
+                  
+                  #### 2024-05-28
+                  - **User**
+                    - `GET` -> `POST`로 변경
+                  
+                  - **Room**
+                    - 방 상세, 목록 조회 시 참여자 닉네임 정보 추가
+                      
+                      """)
             .version("1.0");
 
     // SecuritySecheme명

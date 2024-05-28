@@ -4,6 +4,7 @@ import com.storm.score.dto.UserChangePasswordReqDto;
 import com.storm.score.dto.UserLoginReqDto;
 import com.storm.score.dto.UserSignupReqDto;
 import com.storm.score.dto.UserSignupResDto;
+import com.storm.score.em.UserRole;
 import com.storm.score.exception.ApiException;
 import com.storm.score.exception.ResponseCode;
 import com.storm.score.model.User;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -51,7 +53,7 @@ public class UserService {
                 .nickName(reqDto.getNickName())
                 .build();
 
-        user.addRoleList(reqDto.getRoleList());
+        user.addRoleList(List.of(UserRole.USER.name()));
 
         userRepository.save(user);
 
@@ -76,8 +78,10 @@ public class UserService {
         emailVerificationService.checkEmailAuth(email,verificationNumber);
     }
 
-    public Boolean checkEmail(String email) {
-        return getUserEntityService.existsByEmail(email);
+    public void checkEmailDuplicate(String email) {
+        boolean isExist = getUserEntityService.existsByEmail(email);
+
+        if (isExist) throw new ApiException(ResponseCode.DUPLICATED_USER_ID, "이미 존재하는 이메일입니다. email: " + email);
     }
 
     public boolean checkNickName(String nickName) {
