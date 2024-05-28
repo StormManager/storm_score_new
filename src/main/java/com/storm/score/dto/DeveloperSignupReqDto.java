@@ -1,11 +1,15 @@
 package com.storm.score.dto;
 
+import com.storm.score.annotaion.ListEnumValidator;
+import com.storm.score.em.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * packageName    : com.storm.score.dto
@@ -21,8 +25,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(name = "User Signup Request")
-public class UserSignupReqDto {
+@Schema(name = "Developer Signup Request")
+public class DeveloperSignupReqDto {
+
     @Schema(description = "이메일", example = "test@email.com")
     @Email
     private String email;
@@ -42,4 +47,8 @@ public class UserSignupReqDto {
     @Schema(description = "닉네임", example = "test")
     @Size(min = 1, max = 30)
     private String nickName;
+
+    @Schema(description = "권한 [ADMIN, USER] (대소문자 무시, ADMIN 부여시 USER도 부여해야함)", example = "[\"USER\", \"ADMIN\"]")
+    @ListEnumValidator(enumClass = UserRole.class, ignoreCase = true)
+    private List<String> roleList;
 }
