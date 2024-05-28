@@ -47,6 +47,7 @@ public class SwaggerConfig {
                   #### 2024-05-28
                   - **User**
                     - `GET` -> `POST`로 변경
+                    - 이메일 중복 체크와 이메일 인증 한번에 처리
                   
                   - **Room**
                     - 방 상세, 목록 조회 시 참여자 닉네임 정보 추가
