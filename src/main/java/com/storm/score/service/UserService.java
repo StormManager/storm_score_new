@@ -1,9 +1,6 @@
 package com.storm.score.service;
 
-import com.storm.score.dto.UserChangePasswordReqDto;
-import com.storm.score.dto.UserLoginReqDto;
-import com.storm.score.dto.UserSignupReqDto;
-import com.storm.score.dto.UserSignupResDto;
+import com.storm.score.dto.*;
 import com.storm.score.em.UserRole;
 import com.storm.score.exception.ApiException;
 import com.storm.score.exception.ResponseCode;
@@ -74,8 +71,8 @@ public class UserService {
         emailVerificationService.emailAuth(email);
     }
 
-    public void checkEmailAuth(String email, String verificationNumber) {
-        emailVerificationService.checkEmailAuth(email,verificationNumber);
+    public void checkEmailAuth(EmailAuthReqDto reqDto) {
+        emailVerificationService.checkEmailAuth(reqDto.getEmail(), reqDto.getVerificationNumber());
     }
 
     public void checkEmailDuplicate(String email) {
@@ -84,8 +81,8 @@ public class UserService {
         if (isExist) throw new ApiException(ResponseCode.DUPLICATED_USER_ID, "이미 존재하는 이메일입니다. email: " + email);
     }
 
-    public boolean checkNickName(String nickName) {
-        return getUserEntityService.existsByNickName(nickName);
+    public boolean checkNickName(NickNameReqDto reqDto) {
+        return getUserEntityService.existsByNickName(reqDto.getNickName());
     }
 
     @Transactional(readOnly = true)

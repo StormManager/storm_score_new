@@ -45,9 +45,9 @@ public class UserController {
             true : 중복 / false : 중복아님""")
     @PostMapping("/check-nickname")
     public CommonResDto<Boolean> checkNickname(
-            @Parameter @RequestParam String nickName
+            @Parameter @RequestBody NickNameReqDto reqDto
     ) {
-        Boolean data = this.userService.checkNickName(nickName);
+        Boolean data = this.userService.checkNickName(reqDto);
 
         return CommonResDto.success(data);
     }
@@ -58,10 +58,10 @@ public class UserController {
             중복시 Exception""")
     @PostMapping("/email-auth")
     public CommonResDto<Void> emailAuth(
-            @Parameter @RequestParam String email
+            @Parameter @RequestBody EmailReqDto reqDto
     ) {
-        this.userService.emailAuth(email);
-        this.userService.checkEmailDuplicate(email);
+        this.userService.emailAuth(reqDto.getEmail());
+        this.userService.checkEmailDuplicate(reqDto.getEmail());
 
         return CommonResDto.success();
     }
@@ -69,10 +69,9 @@ public class UserController {
     @Operation(summary = "이메일 인증 확인", description = "이메일 인증 확인을 진행합니다.")
     @PostMapping("/check-email-auth")
     public CommonResDto<Void> checkEmailAuth(
-            @Parameter @RequestParam String email,
-            @Parameter @RequestParam String verificationNumber
+            @Parameter @RequestBody EmailAuthReqDto reqDto
     ) {
-        this.userService.checkEmailAuth(email,verificationNumber);
+        this.userService.checkEmailAuth(reqDto);
 
         return CommonResDto.success();
     }
