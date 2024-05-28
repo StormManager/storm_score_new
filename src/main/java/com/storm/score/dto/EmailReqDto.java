@@ -7,26 +7,20 @@ import lombok.NoArgsConstructor;
 
 /**
  * packageName    : com.storm.score.dto
- * fileName       : UserChangePasswordReqDto
+ * fileName       : EmailAuthReqDto
  * author         : ojy
- * date           : 2024/05/20
+ * date           : 2024/05/28
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2024/05/20        ojy       최초 생성
+ * 2024/05/28        ojy       최초 생성
  */
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "User Change Password Request Dto")
-public class UserChangePasswordReqDto {
+@Schema(name = "Email Auth Request")
+public class EmailReqDto {
     @Schema(description = "이메일", example = "test@email.com")
     private String email;
-
-    @Schema(description = "비밀번호", example = "test1111")
-    private String password;
-
-    @Schema(description = "비밀번호 확인", example = "test1111")
-    private String checkPassword;
 }
